@@ -1,0 +1,44 @@
+{
+  "backup_data_uid": "fc644858de4d0a22", 
+  "compile_deps": {
+    "compiler": {
+      "local": "yes", 
+      "name": "C++ compiler", 
+      "sort": 0, 
+      "tags": "compiler,lang-cpp"
+    }, 
+    "lib-opencv": {
+      "local": "yes", 
+      "name": "OpenCV library", 
+      "sort": 10, 
+      "tags": "lib,opencv"
+    }
+  }, 
+  "compiler_env": "CK_CXX", 
+  "compiler_flags_as_env": "$<<CK_COMPILER_FLAG_CPP11>>$", 
+  "data_name": "opencv-test-1", 
+  "extra_ld_vars": "-lopencv_imgcodecs -ldl -lz -lIlmImf -lHalf -lpng -ljasper -ljpeg -ltiff",
+  "linker_add_lib_as_env": [
+		"CK_ENV_LIB_OPENCV_LFLAG_IMGPROC",
+		"CK_ENV_LIB_OPENCV_LFLAG_HIGHGUI",
+		"CK_ENV_LIB_OPENCV_LFLAG_CORE",
+		"CK_ENV_LIB_OPENCV_LFLAG_IMGCODECS",
+		"CK_COMPILER_FLAG_PTHREAD_LIB"
+  ],
+  "main_language": "cpp", 
+  "process_in_tmp": "yes", 
+  "program": "yes", 
+  "run_cmds": {
+    "default": {
+      "run_time": {
+        "run_cmd_main": "$#BIN_FILE#$"
+      }
+    } 
+  }, 
+  "skip_bin_ext": "yes", 
+  "source_files": [
+    "opencv-test.cpp"
+  ],
+  "target_file": "opencv-test", 
+  "version": "1.0.0"
+}
