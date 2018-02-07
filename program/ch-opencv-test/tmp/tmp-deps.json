@@ -1,11 +1,11 @@
 {
   "lib-opencv": {
     "sort": 10, 
-    "bat": ". /home/kolyan/CK/local/env/05d7a65344a1eb11/env.sh\n", 
+    "bat": ". /home/nikolay/CK/local/env/ec87f0304952a642/env.sh\n", 
     "cus": {
-      "path_static_lib": "/home/kolyan/CK-TOOLS/lib-opencv-3.3.0-gcc-5.4.0-linux-64/install/lib", 
+      "path_static_lib": "/home/nikolay/CK-TOOLS/lib-opencv-3.3.0-gcc-5.4.0-linux-64/install/lib", 
       "used_package_uid": "6445486b2ac30d3f", 
-      "used_package_uoa": "lib-opencv-3.3.0", 
+      "used_package_uoa": "6445486b2ac30d3f", 
       "install_env": {
         "PACKAGE_NAME2": "3.3.0", 
         "PACKAGE_SKIP_CLEAN_INSTALL": "NO", 
@@ -18,25 +18,25 @@
         "CK_CXX_FLAGS_FOR_CMAKE": "${CK_COMPILER_FLAGS_OBLIGATORY}", 
         "PACKAGE_UNZIP": "YES", 
         "CK_CPU_ARM_VFPV3": "OFF", 
-        "CK_CXX_PATH_FOR_CMAKE": "/usr/bin/g++", 
+        "CK_CXX_PATH_FOR_CMAKE": "/usr/bin/g++-5", 
         "CK_TARGET_CPU_BITS": "64", 
         "PACKAGE_WGET": "YES", 
         "PACKAGE_WGET_EXTRA": "--no-cookies", 
-        "CK_CC_PATH_FOR_CMAKE": "/usr/bin/gcc", 
+        "CK_CC_PATH_FOR_CMAKE": "/usr/bin/gcc-5", 
         "CK_COMPILER_PATH_FOR_CMAKE_MINGW": "/usr/bin", 
         "PACKAGE_SUB_DIR1": "opencv-3.3.0", 
         "CK_ARMEABI_V7A": "OFF", 
-        "CK_HOST_CPU_NUMBER_OF_PROCESSORS": "8", 
+        "CK_HOST_CPU_NUMBER_OF_PROCESSORS": "4", 
         "CK_HOST_OS_ID": "linux", 
         "CMAKE_CONFIG": "Release", 
         "CK_AR_PATH_FOR_CMAKE_MINGW": "/usr/bin/ar", 
         "CK_TARGET_OS_ID": "linux", 
         "CK_CXX_FLAGS_FOR_CMAKE_MINGW": "${CK_COMPILER_FLAGS_OBLIGATORY}", 
         "PACKAGE_VERSION": "3.3.0", 
-        "CK_CC_PATH_FOR_CMAKE_MINGW": "/usr/bin/gcc", 
+        "CK_CC_PATH_FOR_CMAKE_MINGW": "/usr/bin/gcc-5", 
         "PACKAGE_UNZIP_SKIP_ERROR": "YES", 
         "CK_AR_PATH_FOR_CMAKE": "/usr/bin/ar", 
-        "CK_CXX_PATH_FOR_CMAKE_MINGW": "/usr/bin/g++", 
+        "CK_CXX_PATH_FOR_CMAKE_MINGW": "/usr/bin/g++-5", 
         "CK_CMAKE_EXTRA": "", 
         "PACKAGE_COPY": "NO", 
         "PACKAGE_URL": "https://github.com/opencv/opencv/archive", 
@@ -49,7 +49,7 @@
         "CK_COMPILER_PATH_FOR_CMAKE": "/usr/bin", 
         "PACKAGE_GIT": "NO", 
         "PACKAGE_SKIP_CLEAN_SRC_DIR": "NO", 
-        "PACKAGE_CONFIGURE_FLAGS": "-DWITH_WEBP=OFF -DWITH_ITT=OFF -DWITH_IPP=OFF -DBUILD_ZLIB=ON -DWITH_JPEG=ON -DWITH_1394=OFF -DBUILD_JPEG=ON -DBUILD_PNG=ON -DBUILD_TIFF=ON -DWITH_CUDA=OFF -DWITH_MATLAB=OFF -DWITH_LAPACK=OFF -DWITH_MKL=OFF -DBUILD_ANDROID_EXAMPLES=OFF -DBUILD_SHARED_LIBS=OFF -DBUILD_DOCS=OFF -DBUILD_PERF_TESTS=OFF -DBUILD_TESTS=OFF -DWITH_CAROTENE=OFF"
+        "PACKAGE_CONFIGURE_FLAGS": "-DUSE_IPPICV=OFF -DBUILD_ZLIB=ON -DWITH_JPEG=ON -DWITH_1394=OFF -DBUILD_JPEG=ON -DBUILD_PNG=ON -DBUILD_TIFF=ON -DWITH_CUDA=OFF -DWITH_MATLAB=OFF -DWITH_LAPACK=OFF -DWITH_MKL=OFF -DBUILD_ANDROID_EXAMPLES=OFF -DBUILD_SHARED_LIBS=OFF -DBUILD_DOCS=OFF -DBUILD_PERF_TESTS=OFF -DBUILD_TESTS=OFF -DWITH_CAROTENE=OFF"
       }, 
       "dynamic_lib": "libopencv_core.so", 
       "skip_path": "yes", 
@@ -61,7 +61,7 @@
         "win": "opencv_annotation.exe", 
         "linux": "libopencv_core.so"
       }, 
-      "path_include": "/home/kolyan/CK-TOOLS/lib-opencv-3.3.0-gcc-5.4.0-linux-64/install/include", 
+      "path_include": "/home/nikolay/CK-TOOLS/lib-opencv-3.3.0-gcc-5.4.0-linux-64/install/include", 
       "version": "3.3.0", 
       "soft_path_example": {
         "linux": "/usr/lib/x86_64-linux-gnu/libopencv_core.so"
@@ -77,35 +77,35 @@
         3, 
         0
       ], 
-      "full_path": "/home/kolyan/CK-TOOLS/lib-opencv-3.3.0-gcc-5.4.0-linux-64/install/lib/libopencv_core.a", 
+      "full_path": "/home/nikolay/CK-TOOLS/lib-opencv-3.3.0-gcc-5.4.0-linux-64/install/lib/libopencv_core.a", 
       "check_that_exists": "yes", 
-      "path_dynamic_lib": "/home/kolyan/CK-TOOLS/lib-opencv-3.3.0-gcc-5.4.0-linux-64/install/lib", 
+      "path_dynamic_lib": "/home/nikolay/CK-TOOLS/lib-opencv-3.3.0-gcc-5.4.0-linux-64/install/lib", 
       "ck_version": 10, 
       "env_prefix": "CK_ENV_LIB_OPENCV", 
-      "path_lib": "/home/kolyan/CK-TOOLS/lib-opencv-3.3.0-gcc-5.4.0-linux-64/install/lib"
+      "path_lib": "/home/nikolay/CK-TOOLS/lib-opencv-3.3.0-gcc-5.4.0-linux-64/install/lib"
     }, 
     "name": "OpenCV library", 
     "tags": "lib,opencv", 
     "num_entries": 2, 
     "choices": [
-      "05d7a65344a1eb11", 
-      "286205bf859be93b"
+      "ec87f0304952a642", 
+      "570dc1e4d30a1447"
     ], 
-    "uoa": "05d7a65344a1eb11", 
+    "uoa": "ec87f0304952a642", 
     "dict": {
       "data_name": "OpenCV library", 
       "deps": {
         "cmake": {
           "detected_ver": "3.5.1", 
           "sort": 5, 
-          "bat": ". /home/kolyan/CK/local/env/ca4bbea978eaabf8/env.sh\n", 
+          "bat": ". /home/nikolay/CK/local/env/2564764d7438cbf6/env.sh\n", 
           "ver": "3.5.1", 
           "name": "cmake", 
           "tags": "tool,cmake", 
           "build_dir_name": "cmake", 
-          "uoa": "ca4bbea978eaabf8", 
+          "uoa": "2564764d7438cbf6", 
           "choices": [
-            "ca4bbea978eaabf8"
+            "2564764d7438cbf6"
           ], 
           "num_entries": 1, 
           "dict": {
@@ -182,18 +182,24 @@
           "force_target_as_host": "yes"
         }, 
         "compiler": {
-          "detected_ver": "5.4.0", 
+          "detected_ver": "6.3.0", 
           "sort": 10, 
-          "bat": ". /home/kolyan/CK/local/env/b4532bf6c8e15ac1/env.sh\n", 
-          "ver": "5.4.0", 
+          "bat": ". /home/nikolay/CK/local/env/1a4f96b3790174ff/env.sh\n", 
+          "ver": "6.3.0", 
           "name": "C++ compiler", 
           "tags": "compiler,lang-cpp", 
           "build_dir_name": "gcc", 
-          "uoa": "b4532bf6c8e15ac1", 
+          "uoa": "1a4f96b3790174ff", 
           "choices": [
-            "b4532bf6c8e15ac1"
+            "1a4f96b3790174ff", 
+            "92584cbdaf8ec6d0"
           ], 
-          "num_entries": 1, 
+          "num_entries": 2, 
+          "update_tags_by_target_platform2": {
+            "win": "mcl", 
+            "android": "gcc", 
+            "linux": "gcc"
+          }, 
           "dict": {
             "env_script": "env.sh", 
             "deps": {}, 
@@ -205,11 +211,12 @@
               "lang-c", 
               "lang-cpp", 
               "target-os-linux-64", 
-              "v5", 
-              "v5.4", 
-              "v5.4.0"
+              "v6", 
+              "v6.3", 
+              "v6.3.0"
             ], 
             "customize": {
+              "tool_postfix": "-6", 
               "can_strip_dynamic_lib": "yes", 
               "build_dir_name": "gcc", 
               "skip_path": "yes", 
@@ -229,9 +236,9 @@
                 "C", 
                 "CPP"
               ], 
-              "version": "5.4.0", 
+              "version": "6.3.0", 
               "soft_file_from_host_os": "yes", 
-              "tool_postfix": "", 
+              "sort": 100, 
               "soft_file": {
                 "win": "gcc.exe", 
                 "linux": "gcc"
@@ -241,8 +248,8 @@
               "add_to_path": "yes", 
               "add_only_with_version": "yes", 
               "version_split": [
-                5, 
-                4, 
+                6, 
+                3, 
                 0
               ], 
               "limit_recursion_dir_search": {
@@ -256,16 +263,16 @@
                 "windows", 
                 "linux"
               ], 
-              "full_path": "/usr/bin/gcc"
+              "full_path": "/usr/bin/gcc-6"
             }, 
             "setup": {
               "version_split": [
-                5, 
-                4, 
+                6, 
+                3, 
                 0
               ], 
               "target_os_bits": "64", 
-              "version": "5.4.0", 
+              "version": "6.3.0", 
               "host_os_uoa": "4258b5fe54828a50", 
               "target_os_uoa": "4258b5fe54828a50"
             }, 
@@ -275,14 +282,14 @@
               "CK_FLAGS_DYNAMIC_BIN": " ", 
               "CK_COMPILER_FLAGS_OBLIGATORY": "", 
               "CK_AR": "ar", 
-              "CK_COMPILER_POSTFIX": "", 
+              "CK_COMPILER_POSTFIX": "-6", 
               "CK_PROFILER": "gprof", 
               "CK_COMPILER_TOOLCHAIN_NAME": "gcc", 
               "CK_LIB_EXT": ".a", 
               "CK_OPT_SIZE": "-Os", 
               "CK_OPT_SPEED": "-O3", 
               "CK_COMPILER_FLAG_PTHREAD_LIB": "-lpthread", 
-              "CK_CC": "gcc", 
+              "CK_CC": "gcc-6", 
               "CK_RANLIB": "ranlib", 
               "CK_COMPILER_FLAG_GPROF": "-pg", 
               "CK_OPT_ALL_WARNINGS": "-Wall", 
@@ -307,7 +314,7 @@
               "CK_PLUGIN_FLAG": "-fplugin=", 
               "CK_OPT_SPEED_SAFE": "-O2", 
               "CK_DLL_EXT": ".so", 
-              "CK_CXX": "g++", 
+              "CK_CXX": "g++-6", 
               "CK_ASM_EXT": ".s", 
               "CK_FLAG_PREFIX_INCLUDE": "-I", 
               "CK_LD_FLAGS_EXTRA": "", 
@@ -341,9 +348,9 @@
         "v3.3.0"
       ], 
       "customize": {
-        "path_static_lib": "/home/kolyan/CK-TOOLS/lib-opencv-3.3.0-gcc-5.4.0-linux-64/install/lib", 
+        "path_static_lib": "/home/nikolay/CK-TOOLS/lib-opencv-3.3.0-gcc-5.4.0-linux-64/install/lib", 
         "used_package_uid": "6445486b2ac30d3f", 
-        "used_package_uoa": "lib-opencv-3.3.0", 
+        "used_package_uoa": "6445486b2ac30d3f", 
         "install_env": {
           "PACKAGE_NAME2": "3.3.0", 
           "PACKAGE_SKIP_CLEAN_INSTALL": "NO", 
@@ -356,25 +363,25 @@
           "CK_CXX_FLAGS_FOR_CMAKE": "${CK_COMPILER_FLAGS_OBLIGATORY}", 
           "PACKAGE_UNZIP": "YES", 
           "CK_CPU_ARM_VFPV3": "OFF", 
-          "CK_CXX_PATH_FOR_CMAKE": "/usr/bin/g++", 
+          "CK_CXX_PATH_FOR_CMAKE": "/usr/bin/g++-5", 
           "CK_TARGET_CPU_BITS": "64", 
           "PACKAGE_WGET": "YES", 
           "PACKAGE_WGET_EXTRA": "--no-cookies", 
-          "CK_CC_PATH_FOR_CMAKE": "/usr/bin/gcc", 
+          "CK_CC_PATH_FOR_CMAKE": "/usr/bin/gcc-5", 
           "CK_COMPILER_PATH_FOR_CMAKE_MINGW": "/usr/bin", 
           "PACKAGE_SUB_DIR1": "opencv-3.3.0", 
           "CK_ARMEABI_V7A": "OFF", 
-          "CK_HOST_CPU_NUMBER_OF_PROCESSORS": "8", 
+          "CK_HOST_CPU_NUMBER_OF_PROCESSORS": "4", 
           "CK_HOST_OS_ID": "linux", 
           "CMAKE_CONFIG": "Release", 
           "CK_AR_PATH_FOR_CMAKE_MINGW": "/usr/bin/ar", 
           "CK_TARGET_OS_ID": "linux", 
           "CK_CXX_FLAGS_FOR_CMAKE_MINGW": "${CK_COMPILER_FLAGS_OBLIGATORY}", 
           "PACKAGE_VERSION": "3.3.0", 
-          "CK_CC_PATH_FOR_CMAKE_MINGW": "/usr/bin/gcc", 
+          "CK_CC_PATH_FOR_CMAKE_MINGW": "/usr/bin/gcc-5", 
           "PACKAGE_UNZIP_SKIP_ERROR": "YES", 
           "CK_AR_PATH_FOR_CMAKE": "/usr/bin/ar", 
-          "CK_CXX_PATH_FOR_CMAKE_MINGW": "/usr/bin/g++", 
+          "CK_CXX_PATH_FOR_CMAKE_MINGW": "/usr/bin/g++-5", 
           "CK_CMAKE_EXTRA": "", 
           "PACKAGE_COPY": "NO", 
           "PACKAGE_URL": "https://github.com/opencv/opencv/archive", 
@@ -387,7 +394,7 @@
           "CK_COMPILER_PATH_FOR_CMAKE": "/usr/bin", 
           "PACKAGE_GIT": "NO", 
           "PACKAGE_SKIP_CLEAN_SRC_DIR": "NO", 
-          "PACKAGE_CONFIGURE_FLAGS": "-DWITH_WEBP=OFF -DWITH_ITT=OFF -DWITH_IPP=OFF -DBUILD_ZLIB=ON -DWITH_JPEG=ON -DWITH_1394=OFF -DBUILD_JPEG=ON -DBUILD_PNG=ON -DBUILD_TIFF=ON -DWITH_CUDA=OFF -DWITH_MATLAB=OFF -DWITH_LAPACK=OFF -DWITH_MKL=OFF -DBUILD_ANDROID_EXAMPLES=OFF -DBUILD_SHARED_LIBS=OFF -DBUILD_DOCS=OFF -DBUILD_PERF_TESTS=OFF -DBUILD_TESTS=OFF -DWITH_CAROTENE=OFF"
+          "PACKAGE_CONFIGURE_FLAGS": "-DUSE_IPPICV=OFF -DBUILD_ZLIB=ON -DWITH_JPEG=ON -DWITH_1394=OFF -DBUILD_JPEG=ON -DBUILD_PNG=ON -DBUILD_TIFF=ON -DWITH_CUDA=OFF -DWITH_MATLAB=OFF -DWITH_LAPACK=OFF -DWITH_MKL=OFF -DBUILD_ANDROID_EXAMPLES=OFF -DBUILD_SHARED_LIBS=OFF -DBUILD_DOCS=OFF -DBUILD_PERF_TESTS=OFF -DBUILD_TESTS=OFF -DWITH_CAROTENE=OFF"
         }, 
         "dynamic_lib": "libopencv_core.so", 
         "skip_path": "yes", 
@@ -399,7 +406,7 @@
           "win": "opencv_annotation.exe", 
           "linux": "libopencv_core.so"
         }, 
-        "path_include": "/home/kolyan/CK-TOOLS/lib-opencv-3.3.0-gcc-5.4.0-linux-64/install/include", 
+        "path_include": "/home/nikolay/CK-TOOLS/lib-opencv-3.3.0-gcc-5.4.0-linux-64/install/include", 
         "version": "3.3.0", 
         "soft_path_example": {
           "linux": "/usr/lib/x86_64-linux-gnu/libopencv_core.so"
@@ -415,16 +422,16 @@
           3, 
           0
         ], 
-        "full_path": "/home/kolyan/CK-TOOLS/lib-opencv-3.3.0-gcc-5.4.0-linux-64/install/lib/libopencv_core.a", 
+        "full_path": "/home/nikolay/CK-TOOLS/lib-opencv-3.3.0-gcc-5.4.0-linux-64/install/lib/libopencv_core.a", 
         "check_that_exists": "yes", 
-        "path_dynamic_lib": "/home/kolyan/CK-TOOLS/lib-opencv-3.3.0-gcc-5.4.0-linux-64/install/lib", 
+        "path_dynamic_lib": "/home/nikolay/CK-TOOLS/lib-opencv-3.3.0-gcc-5.4.0-linux-64/install/lib", 
         "ck_version": 10, 
         "env_prefix": "CK_ENV_LIB_OPENCV", 
-        "path_lib": "/home/kolyan/CK-TOOLS/lib-opencv-3.3.0-gcc-5.4.0-linux-64/install/lib"
+        "path_lib": "/home/nikolay/CK-TOOLS/lib-opencv-3.3.0-gcc-5.4.0-linux-64/install/lib"
       }, 
       "setup": {
-        "deps_compiler": "b4532bf6c8e15ac1", 
-        "deps_cmake": "ca4bbea978eaabf8", 
+        "deps_compiler": "1a4f96b3790174ff", 
+        "deps_cmake": "2564764d7438cbf6", 
         "version": "3.3.0", 
         "version_split": [
           3, 
@@ -441,10 +448,10 @@
       "env": {
         "CK_ENV_LIB_OPENCV_LFLAG_HIGHGUI": "-lopencv_highgui", 
         "CK_ENV_LIB_OPENCV_LFLAG_IMGPROC": "-lopencv_imgproc", 
-        "CK_ENV_LIB_OPENCV_DYNAMIC_LIB_PATH": "/home/kolyan/CK-TOOLS/lib-opencv-3.3.0-gcc-5.4.0-linux-64/install/lib", 
+        "CK_ENV_LIB_OPENCV_DYNAMIC_LIB_PATH": "/home/nikolay/CK-TOOLS/lib-opencv-3.3.0-gcc-5.4.0-linux-64/install/lib", 
         "CK_ENV_LIB_OPENCV_LFLAG_CORE": "-lopencv_core", 
-        "CK_ENV_LIB_OPENCV_STATIC_LIB_PATH": "/home/kolyan/CK-TOOLS/lib-opencv-3.3.0-gcc-5.4.0-linux-64/install/lib", 
-        "CK_ENV_LIB_OPENCV": "/home/kolyan/CK-TOOLS/lib-opencv-3.3.0-gcc-5.4.0-linux-64/install"
+        "CK_ENV_LIB_OPENCV_STATIC_LIB_PATH": "/home/nikolay/CK-TOOLS/lib-opencv-3.3.0-gcc-5.4.0-linux-64/install/lib", 
+        "CK_ENV_LIB_OPENCV": "/home/nikolay/CK-TOOLS/lib-opencv-3.3.0-gcc-5.4.0-linux-64/install"
       }, 
       "soft_alias": "lib.opencv"
     }, 
@@ -454,9 +461,10 @@
   }, 
   "compiler": {
     "sort": 0, 
-    "detected_ver": "5.4.0", 
-    "bat": ". /home/kolyan/CK/local/env/b4532bf6c8e15ac1/env.sh\n", 
+    "detected_ver": "6.3.0", 
+    "bat": ". /home/nikolay/CK/local/env/1a4f96b3790174ff/env.sh\n", 
     "cus": {
+      "tool_postfix": "-6", 
       "can_strip_dynamic_lib": "yes", 
       "build_dir_name": "gcc", 
       "skip_path": "yes", 
@@ -476,9 +484,9 @@
         "C", 
         "CPP"
       ], 
-      "version": "5.4.0", 
+      "version": "6.3.0", 
       "soft_file_from_host_os": "yes", 
-      "tool_postfix": "", 
+      "sort": 100, 
       "soft_file": {
         "win": "gcc.exe", 
         "linux": "gcc"
@@ -488,8 +496,8 @@
       "add_to_path": "yes", 
       "add_only_with_version": "yes", 
       "version_split": [
-        5, 
-        4, 
+        6, 
+        3, 
         0
       ], 
       "limit_recursion_dir_search": {
@@ -503,16 +511,17 @@
         "windows", 
         "linux"
       ], 
-      "full_path": "/usr/bin/gcc"
+      "full_path": "/usr/bin/gcc-6"
     }, 
     "name": "C++ compiler", 
     "tags": "compiler,lang-cpp", 
     "build_dir_name": "gcc", 
-    "num_entries": 1, 
+    "num_entries": 2, 
     "choices": [
-      "b4532bf6c8e15ac1"
+      "1a4f96b3790174ff", 
+      "a8e7241269bb61f7"
     ], 
-    "uoa": "b4532bf6c8e15ac1", 
+    "uoa": "1a4f96b3790174ff", 
     "dict": {
       "data_name": "GNU C compiler", 
       "deps": {}, 
@@ -524,11 +533,12 @@
         "lang-c", 
         "lang-cpp", 
         "target-os-linux-64", 
-        "v5", 
-        "v5.4", 
-        "v5.4.0"
+        "v6", 
+        "v6.3", 
+        "v6.3.0"
       ], 
       "customize": {
+        "tool_postfix": "-6", 
         "can_strip_dynamic_lib": "yes", 
         "build_dir_name": "gcc", 
         "skip_path": "yes", 
@@ -548,9 +558,9 @@
           "C", 
           "CPP"
         ], 
-        "version": "5.4.0", 
+        "version": "6.3.0", 
         "soft_file_from_host_os": "yes", 
-        "tool_postfix": "", 
+        "sort": 100, 
         "soft_file": {
           "win": "gcc.exe", 
           "linux": "gcc"
@@ -560,8 +570,8 @@
         "add_to_path": "yes", 
         "add_only_with_version": "yes", 
         "version_split": [
-          5, 
-          4, 
+          6, 
+          3, 
           0
         ], 
         "limit_recursion_dir_search": {
@@ -575,16 +585,16 @@
           "windows", 
           "linux"
         ], 
-        "full_path": "/usr/bin/gcc"
+        "full_path": "/usr/bin/gcc-6"
       }, 
       "setup": {
         "version_split": [
-          5, 
-          4, 
+          6, 
+          3, 
           0
         ], 
         "target_os_bits": "64", 
-        "version": "5.4.0", 
+        "version": "6.3.0", 
         "host_os_uoa": "4258b5fe54828a50", 
         "target_os_uoa": "4258b5fe54828a50"
       }, 
@@ -594,14 +604,14 @@
         "CK_FLAGS_DYNAMIC_BIN": " ", 
         "CK_COMPILER_FLAGS_OBLIGATORY": "", 
         "CK_AR": "ar", 
-        "CK_COMPILER_POSTFIX": "", 
+        "CK_COMPILER_POSTFIX": "-6", 
         "CK_PROFILER": "gprof", 
         "CK_COMPILER_TOOLCHAIN_NAME": "gcc", 
         "CK_LIB_EXT": ".a", 
         "CK_OPT_SIZE": "-Os", 
         "CK_OPT_SPEED": "-O3", 
         "CK_COMPILER_FLAG_PTHREAD_LIB": "-lpthread", 
-        "CK_CC": "gcc", 
+        "CK_CC": "gcc-6", 
         "CK_RANLIB": "ranlib", 
         "CK_COMPILER_FLAG_GPROF": "-pg", 
         "CK_OPT_ALL_WARNINGS": "-Wall", 
@@ -626,7 +636,7 @@
         "CK_PLUGIN_FLAG": "-fplugin=", 
         "CK_OPT_SPEED_SAFE": "-O2", 
         "CK_DLL_EXT": ".so", 
-        "CK_CXX": "g++", 
+        "CK_CXX": "g++-6", 
         "CK_ASM_EXT": ".s", 
         "CK_FLAG_PREFIX_INCLUDE": "-I", 
         "CK_LD_FLAGS_EXTRA": "", 
@@ -645,7 +655,7 @@
       }, 
       "soft_alias": "compiler.gcc"
     }, 
-    "ver": "5.4.0", 
+    "ver": "6.3.0", 
     "local": "yes"
   }
 }
