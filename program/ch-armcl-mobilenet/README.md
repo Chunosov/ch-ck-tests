@@ -17,6 +17,7 @@ cd cnn_data
 wget https://www.dropbox.com/s/bzi2lwy2t1mfxoq/arm_mobilenet_v1_1_224_model.zip
 unzip arm_mobilenet_v1_1_224_model.zip
 ```
+Weights are prepared by ARM.
 
 ## Build
 ```
