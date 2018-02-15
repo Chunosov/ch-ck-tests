@@ -1,0 +1,60 @@
+{
+  "backup_data_uid": "808d44e5883b8b4c", 
+  "build_compiler_vars": {
+    "ARM_COMPUTE_CL": 1
+  }, 
+  "compile_deps": {
+    "compiler": {
+      "local": "yes", 
+      "name": "C++ compiler", 
+      "sort": 10, 
+      "tags": "compiler,lang-cpp"
+    }, 
+    "library": {
+      "extra_ld_vars": "$<<CK_ENV_LIB_ARMCL_LFLAG_CORE>>$", 
+      "local": "yes", 
+      "name": "Arm Compute Library (OpenCL & Graph APIs)", 
+      "sort": 5, 
+      "tags": "lib,armcl,vopencl,vgraph"
+    } 
+  }, 
+  "compiler_add_include_as_env_from_deps": [
+    "CK_ENV_LIB_STDCPP_INCLUDE", 
+    "CK_ENV_LIB_STDCPP_INCLUDE_EXTRA", 
+    "CK_ENV_LIB_ARMCL_INCLUDE", 
+    "CK_ENV_LIB_ARMCL_UTILS"
+  ], 
+  "compiler_env": "CK_CXX", 
+  "compiler_flags_as_env": "$<<CK_COMPILER_FLAG_CPP11>>$ -Wno-ignored-attributes", 
+  "data_name": "ch-armcl-mobilenet", 
+  "linker_add_lib_as_env": [
+    "CK_CXX_EXTRA", 
+    "CK_ENV_LIB_STDCPP_STATIC"
+  ], 
+  "main_language": "cpp", 
+  "only_for_target_os_tags": [
+    "linux"
+  ], 
+  "process_in_tmp": "yes", 
+  "program": "yes", 
+  "run_cmds": {
+    "default": {
+      "ignore_return_code": "yes", 
+      "run_time": {
+        "need_compute_device": "opencl", 
+        "run_cmd_main": "$#BIN_FILE#$ 1 0 . $<<CK_IMG>>$ ../synset_words.txt"
+      }
+    }
+  }, 
+  "run_vars": {
+    "CK_IMG": "../ILSVRC2012_val_00000001.ppm"
+  }, 
+  "skip_bin_ext": "yes", 
+  "source_files": [
+    "graph_mobilenet.cpp", 
+    "$<<CK_ENV_LIB_ARMCL_UTILS>>$/GraphUtils.cpp", 
+    "$<<CK_ENV_LIB_ARMCL_UTILS>>$/Utils.cpp"
+  ], 
+  "target_file": "graph_mobilenet", 
+  "version": "1.0.0"
+}
