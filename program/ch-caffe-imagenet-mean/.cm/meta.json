@@ -1,0 +1,29 @@
+{
+  "no_compile": "yes", 
+  "no_target_file": "yes", 
+  "only_for_target_os_tags": [
+    "linux"
+  ],
+  "run_cmds": {
+    "default": {
+      "run_time": {
+        "run_cmd_main": "$<<CK_ENV_LIB_CAFFE>>$/bin/compute_image_mean $<<CK_ENV_DATASET_IMAGENET_VAL_LMDB>>$ mean.binaryproto"
+      }
+    }
+  },
+  "run_deps": {
+    "dataset-imagenet-lmdb": {
+      "local": "yes", 
+      "name": "ImageNet dataset (lmdb)", 
+      "sort": 10, 
+      "tags": "dataset,imagenet,val-lmdb"
+    }, 
+    "lib-caffe": {
+      "local": "yes", 
+      "name": "Caffe framework", 
+      "sort": 20, 
+      "tags": "lib,caffe"
+    }
+  },
+  "version": "1.0.0"
+}
