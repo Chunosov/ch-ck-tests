@@ -1,0 +1,35 @@
+{
+  "compile_deps": {
+    "compiler": {
+      "local": "yes",
+      "name": "C++ compiler",
+      "sort": 0,
+      "tags": "compiler,lang-cpp"
+    },
+    "lib-lmdb": {
+      "local": "yes", 
+      "name": "LMDB library", 
+      "sort": 10, 
+      "tags": "lib,lmdb"
+    }
+  },
+  "compiler_env": "CK_CXX",
+  "run_cmds": {
+    "default": {
+      "run_time": {
+        "run_cmd_main": "$#BIN_FILE#$"
+      }
+    }
+  },
+  "run_deps": {
+    "dataset-imagenet-lmdb": {
+      "local": "yes", 
+      "name": "ImageNet dataset (lmdb)", 
+      "sort": 20, 
+      "tags": "dataset,imagenet,val-lmdb"
+    }
+  },
+  "source_files": [
+    "read_lmdb.cpp"
+  ]
+}
