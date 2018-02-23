@@ -14,6 +14,7 @@
     }
   },
   "compiler_env": "CK_CXX",
+  "compiler_flags_as_env": "$<<CK_COMPILER_FLAG_CPP11>>$",
   "run_cmds": {
     "default": {
       "run_time": {
@@ -28,6 +29,9 @@
       "sort": 20, 
       "tags": "dataset,imagenet,val-lmdb"
     }
+  },
+  "run_vars": {
+    "CK_IMG_COUNT": 10
   },
   "source_files": [
     "read_lmdb.cpp"
