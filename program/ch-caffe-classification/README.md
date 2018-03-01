@@ -40,3 +40,7 @@ Number of images in every batch.
 
 ### `CK_SKIP_IMAGES`
 Number of images to skip from beginning of dataset.
+
+## TODO
+
+There is not batched operation currently implemented. All images are loaded and classified one by one.

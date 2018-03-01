@@ -23,7 +23,7 @@ string getenv_s(const char* name) {
 }
 
 const int BATCH_COUNT = getenv_i("CK_BATCH_COUNT", 1);
-const int BATCH_SIZE = getenv_i("CK_CAFFE_BATCH_SIZE", 1);
+const int BATCH_SIZE = getenv_i("CK_BATCH_SIZE", 1);
 const int IMAGES_COUNT = BATCH_COUNT * BATCH_SIZE;
 const int SKIP_IMAGES = getenv_i("CK_SKIP_IMAGES", 0);
 const string IMAGES_DIR = getenv_s("CK_ENV_DATASET_IMAGENET_VAL");
@@ -111,6 +111,7 @@ int main(int argc, char** argv) {
     // Classify batch
     for (int i = 0; i < BATCH_SIZE; i++) {
       // Load image
+      cout << endl << images[image_index] << endl;
       start_time = high_resolution_clock::now();
       cv::Mat img = cv::imread(images[image_index], -1);
       cv::Mat img_prepared = classifier.PrepareImage(img);
