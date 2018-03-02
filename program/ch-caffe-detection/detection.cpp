@@ -1,4 +1,4 @@
-#include "classifier.h"
+#include "detector.h"
 
 #include <chrono>
 
@@ -26,12 +26,14 @@ const int BATCH_COUNT = getenv_i("CK_BATCH_COUNT", 1);
 const int BATCH_SIZE = getenv_i("CK_BATCH_SIZE", 1);
 const int IMAGES_COUNT = BATCH_COUNT * BATCH_SIZE;
 const int SKIP_IMAGES = getenv_i("CK_SKIP_IMAGES", 0);
-const string IMAGES_DIR = getenv_s("CK_ENV_DATASET_IMAGENET_VAL");
+const string IMAGES_DIR = getenv_s("CK_ENV_DATASET_IMAGE_DIR");
+const string LABEL_MAP = getenv_s("CK_ENV_MODEL_CAFFE_LABELMAP");
 const string WEIGHTS_FILE = getenv_s("CK_ENV_MODEL_CAFFE_WEIGHTS");
 const string TMP_MODEL_FILE = "tmp.prototxt";
 const string MODEL_FILE = (fs::path(getenv_s("CK_ENV_MODEL_CAFFE"))/"deploy.prototxt").native();
-const string MEAN_FILE = (fs::path(getenv_s("CK_ENV_DATASET_IMAGENET_AUX"))/"imagenet_mean.binaryproto").native();
-const string LABELS_FILE = (fs::path(getenv_s("CK_ENV_DATASET_IMAGENET_AUX"))/"synset_words.txt").native();
+const string MEAN_FILE = "";
+const string MEAN_VALUE = "104,117,123"; // It came from original example
+const float CONF_THRESHOLD = 0.01; // It came from original example
 
 vector<string> get_images() {
   const string filter1(".JPG");
@@ -75,8 +77,7 @@ int main(int argc, char** argv) {
 
   cout << "Model file: " << MODEL_FILE << endl;
   cout << "Weights file: " << WEIGHTS_FILE << endl;
-  cout << "Mean file: " << MEAN_FILE << endl;
-  cout << "Labels file: " << LABELS_FILE << endl;
+  cout << "Label map file: " << LABEL_MAP << endl;
   cout << "Images dir: " << IMAGES_DIR << endl;
   cout << "Batch count: " << BATCH_COUNT << endl;
   cout << "Batch size: " << BATCH_SIZE << endl;
@@ -86,6 +87,7 @@ int main(int argc, char** argv) {
   stringstream s; s << ifstream(MODEL_FILE).rdbuf();
   string prototxt = s.str();
   str_replace(prototxt, "$#batch_size#$", BATCH_SIZE);
+  str_replace(prototxt, "$#path_to_labelmap#$", LABEL_MAP);
   ofstream(TMP_MODEL_FILE, ofstream::trunc) << prototxt;
 
   // Load processing image filenames
@@ -93,22 +95,22 @@ int main(int argc, char** argv) {
   vector<string> images = get_images();
 
   // Build net
-  cout << endl << "Initializing classifier..." << endl;
+  cout << endl << "Initializing detector..." << endl;
   time_point<high_resolution_clock> start_time = high_resolution_clock::now();
-  Classifier classifier(TMP_MODEL_FILE, WEIGHTS_FILE, MEAN_FILE, LABELS_FILE);
+  Detector detector(TMP_MODEL_FILE, WEIGHTS_FILE, MEAN_FILE, MEAN_VALUE);
   duration<double> elapsed = high_resolution_clock::now() - start_time;  
-  cout << "Classifier initialised in " << elapsed.count() << "s" << endl;
+  cout << "Detector initialised in " << elapsed.count() << "s" << endl;
 
   // Run batched mode
-  cout << endl << "Classify..." << endl;
+  cout << endl << "Detect..." << endl;
   double load_total_time = 0;
-  double class_total_time = 0;
+  double det_total_time = 0;
   int image_index = 0;
   int images_processed = 0;
   for (int batch_index = 0; batch_index < BATCH_COUNT; batch_index++) {
     cout << "Batch " << batch_index << endl;
 
-    // Classify batch
+    // Detect batch
     for (int i = 0; i < BATCH_SIZE; i++) {
       cout << endl << fs::path(images[image_index]).filename().native() << endl;
 
@@ -116,25 +118,22 @@ int main(int argc, char** argv) {
       start_time = high_resolution_clock::now();
       cv::Mat img = cv::imread(images[image_index], -1);
       CHECK(!img.empty()) << "Unable to decode image " << images[image_index];
-      cv::Mat img_prepared = classifier.PrepareImage(img);
       elapsed = high_resolution_clock::now() - start_time;  
       load_total_time += elapsed.count();
 
-      // Classify
+      // Detect
       start_time = high_resolution_clock::now();
-      vector<float> probs = classifier.Predict(img_prepared);
-      elapsed = high_resolution_clock::now() - start_time;  
+      vector<Detection> dets = detector.Detect(img);
+      elapsed = high_resolution_clock::now() - start_time;
 
-      // Print the top N predictions.
-      vector<Prediction> predictions = classifier.ProcessPredictions(probs);
-      for (size_t i = 0; i < predictions.size(); ++i) {
-        Prediction p = predictions[i];
-        cout << fixed << setprecision(4) << p.second << " - " << p.first << endl;
-      }
+      // Print detections
+      for (auto det: dets)
+        if (det.score >= CONF_THRESHOLD)
+          cout << det.str() << endl;
 
       // Exclude first batch from averaging
       if (batch_index > 0 || BATCH_COUNT == 1) {
-        class_total_time += elapsed.count();
+        det_total_time += elapsed.count();
         images_processed += BATCH_SIZE;
       }
 
@@ -142,13 +141,13 @@ int main(int argc, char** argv) {
     }
   }
 
-  double class_avg_time = class_total_time / double(images_processed);
+  double det_avg_time = det_total_time / double(images_processed);
 
   cout << endl;
   cout << "Images processed: " << images_processed << endl;
   cout << "All images loaded in " << load_total_time << "s" << endl;
-  cout << "All images classified in " << class_total_time << "s" << endl;
-  cout << "Average classification time: " << class_avg_time << "s";
+  cout << "All images detected in " << det_total_time << "s" << endl;
+  cout << "Average detection time: " << det_avg_time << "s";
   if (BATCH_COUNT > 1) cout << " (first batch excluded)";
   cout << endl;
 
