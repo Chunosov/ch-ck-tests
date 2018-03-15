@@ -22,16 +22,17 @@ for $dataset in `ck search dataset --tags=tags,from,program,meta`:
 
 ### `validate`
 ```
-ck make ch-nntest:program-uoa
+ck validate ch-nntest:program-uoa
 ```
-Iterates over all files of all datasets of given program and run program agains each file. Analyzes program run result and calculates success statistics and fail reasons.
+Iterates over all files of all datasets of given program and runs program against each file, then analyzes program run result and calculates success statistics and fail reasons.
 
 ### `datasets`
 ```
 ck datasets ch-nntest:program-uoa
 ```
 Prints content of all files of all datasets of given program as one CSV-text.
-Example
+
+Example:
 ```
 $ ck datasets ch-nntest:softmax-tensorflow-cpu
 Datasets for program softmax-tensorflow-cpu
