@@ -97,7 +97,7 @@ def load_meta(entry):
 # Get list of all files of all datasets for specified program
 # Each item in the list is a pair: (dateset_uoa, dataset_file)
 
-def get_dataset_files(prog):
+def get_dataset_files(prog, with_path=False):
   prog_meta = load_meta(prog)
   dataset_tags = ','.join(prog_meta['run_cmds']['default']['dataset_tags'])
     
@@ -117,7 +117,12 @@ def get_dataset_files(prog):
     dataset_uoa = dataset['data_uoa']
     dataset_meta = load_meta(dataset)
     for dataset_file in dataset_meta['dataset_files']:
-      processing_files.append((dataset_uoa, dataset_file))
+      if with_path:
+        dataset_file_path = os.path.join(dataset['path'], dataset_file+'.json')
+        item = (dataset_uoa, dataset_file, dataset_file_path)
+      else:
+        item = (dataset_uoa, dataset_file)
+      processing_files.append(item)
   ck.out('Files to process: {}'.format(len(processing_files)))
   return processing_files
 
@@ -143,7 +148,7 @@ def get_fail_reason(res):
   if not reason:
     reason = misc['fail_reason']
   return reason
-  
+
 
 ########################################################################
 # Make reference output
@@ -182,7 +187,8 @@ def make(i):
   ck.out('\nProcessing...\n')
   for dataset_uoa, dataset_file in processing_files:
     ck.out('\n----------------------------------------')
-    color_out(Colors.HEADER, '{}:{} ...'.format(dataset_uoa, dataset_file))
+    color_out(Colors.HEADER, '[{}/{}] {}:{} ...'.format(
+      processed_files+1, len(processing_files), dataset_uoa, dataset_file))
 
     res = ck.access({'action': 'run',
                      'module_uoa': 'program',
@@ -226,7 +232,8 @@ def make(i):
 def validate(i):
   """
   Input:  {
-            (stop_after_fail)        - stop processing after first fail
+            (stop_after_fail)      - stop processing after first fail
+            (show_only_successful)
           }
   Output: {
             return       - return code =  0, if successful
@@ -246,11 +253,13 @@ def validate(i):
   processed_files = 0
   processing_files = get_dataset_files(prog)
   failed_shapes = []
+  success_shapes = []
 
   ck.out('\nProcessing...\n')
   for dataset_uoa, dataset_file in processing_files:
     ck.out('\n----------------------------------------')
-    color_out(Colors.HEADER, '{}:{} ...'.format(dataset_uoa, dataset_file))
+    color_out(Colors.HEADER, '[{}/{}] {}:{} ...'.format(
+      processed_files+1, len(processing_files), dataset_uoa, dataset_file))
 
     res = ck.access({'action': 'run',
                      'module_uoa': 'program',
@@ -266,6 +275,7 @@ def validate(i):
 
     if is_ok(res):
       color_out(Colors.OKGREEN, '****** OK ******')
+      success_shapes.append((dataset_uoa, dataset_file))
     else:
       color_out(Colors.FAIL, '****** FAILED ******')
       failed_shapes.append({
@@ -279,13 +289,62 @@ def validate(i):
   ck.out('\n----------------------------------------')
   ck.out('Total shapes: {}'.format(len(processing_files)))
   ck.out('Processed shapes: {}'.format(processed_files))
-  if failed_shapes:
-    ck.out('Failed shapes: {}'.format(len(failed_shapes)))
-    for p in failed_shapes:
-      ck.out('----------------------------------------')
-      color_out(Colors.HEADER, '{}:{}'.format(p['dataset'], p['file']))
-      ck.out(p['reason'])
-  else:
+  if not failed_shapes:
     ck.out('\nAll shapes OK\n')
+  else:
+    ck.out('Sucessfull shapes: {}'.format(len(success_shapes)))
+    ck.out('Failed shapes: {}'.format(len(failed_shapes)))
+    if i.get('show_only_successful'):
+      ck.out('Successful shapes:')
+      for p in success_shapes:
+        ck.out('{}:{}'.format(p[0], p[1]))
+    else:
+      ck.out('Failed shapes:')
+      for p in failed_shapes:
+        ck.out('----------------------------------------')
+        color_out(Colors.HEADER, '{}:{}'.format(p['dataset'], p['file']))
+        ck.out(p['reason'])
+      ck.out('\n----------------------------------------')
+      ck.out('Failed shapes (summary): {}'.format(len(failed_shapes)))
+      for p in failed_shapes:
+        ck.out('{}:{}'.format(p['dataset'], p['file']))
+
+  return {'return': 0}
+
+
+##############################################################################
+#  Show datasets of program as CSV text
+
+def datasets(i):
+  """
+  Input:  {}
+  Output: {
+            return       - return code =  0, if successful
+                                       >  0, if error
+            (error)      - error text if return > 0
+          }
+  """
+  prog = get_program(i.get('data_uoa'))
+  if not prog:
+    return {'return': 1, 'error': 'Program not found'}
+
+  ck.out('Datasets for program ' + prog['data_uoa'])
+
+  processed_files = 0
+  processing_files = get_dataset_files(prog, with_path = True)
+
+  keys = []
+  for dataset_uoa, dataset_file, dataset_file_path in processing_files:
+    with open(dataset_file_path) as f:
+      data = json.load(f)
+    if not keys:
+      for key in data:
+        keys.append(key)
+      ck.out('FILE,' + ','.join(keys))
+    vals = []
+    vals.append('{}:{}'.format(dataset_uoa, dataset_file))
+    for key in keys:
+      vals.append(str(data[key]))
+    ck.out(','.join(vals))
 
   return {'return': 0}
