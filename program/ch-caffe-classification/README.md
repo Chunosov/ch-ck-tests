@@ -30,6 +30,16 @@ ck compile program:ch-caffe-classification
 ck run program:ch-caffe-classification
 ```
 
+Sample output:
+```
+ILSVRC2012_val_00000001.JPEG
+0.4395 - n01697457 African crocodile, Nile crocodile, Crocodylus niloticus
+0.2030 - n01664065 loggerhead, loggerhead turtle, Caretta caretta
+0.1835 - n01665541 leatherback turtle, leatherback, leathery turtle, Dermochelys coriacea
+0.0975 - n01698640 American alligator, Alligator mississipiensis
+0.0157 - n01737021 water snake
+```
+
 ## Parameters
 
 ### `CK_BATCH_COUNT`
@@ -43,4 +53,5 @@ Number of images to skip from beginning of dataset.
 
 ## TODO
 
-There is not batched operation currently implemented. All images are loaded and classified one by one.
+- There is not batched operation currently implemented. All images are loaded and classified one by one.
+- Check for prediction correctness.

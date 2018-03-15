@@ -1,0 +1,95 @@
+{
+  "backup_data_uid": "ba16776f2408e8ca", 
+  "build_compiler_vars": {
+    "CPU_ONLY": "ON"
+  }, 
+  "compile_deps": {
+    "compiler": {
+      "local": "yes", 
+      "name": "C++ compiler", 
+      "sort": 10, 
+      "tags": "compiler,lang-cpp"
+    }, 
+    "lib-blas": {
+      "local": "yes", 
+      "name": "BLAS library", 
+      "sort": 20, 
+      "tags": "lib,blas,openblas"
+    }, 
+    "lib-boost": {
+      "force_add_static_lib_path": "yes", 
+      "local": "yes", 
+      "name": "Boost library", 
+      "sort": 40, 
+      "tags": "lib,boost"
+    }, 
+    "lib-caffe": {
+      "local": "yes", 
+      "name": "Caffe library", 
+      "no_tags": "dnn-proxy", 
+      "sort": 60, 
+      "tags": "lib,caffe,vcpu,ssd"
+    }, 
+    "lib-opencv": {
+      "local": "yes", 
+      "name": "OpenCV library", 
+      "sort": 50, 
+      "tags": "lib,opencv"
+    }, 
+    "lib-protobuf-host": {
+      "local": "yes", 
+      "name": "ProtoBuf HOST library", 
+      "sort": 30, 
+      "tags": "lib,protobuf-host"
+    }
+  }, 
+  "compiler_env": "CK_CXX", 
+  "data_name": "ch-caffe-detection", 
+  "linker_add_lib_as_env": [
+    "CK_ENV_LIB_GLOG_LFLAG", 
+    "CK_ENV_LIB_BOOST_LFLAG_THREAD", 
+    "CK_ENV_LIB_BOOST_LFLAG_DATE_TIME", 
+    "CK_ENV_LIB_BOOST_LFLAG_FILESYSTEM", 
+    "CK_ENV_LIB_BOOST_LFLAG_SYSTEM", 
+    "CK_ENV_LIB_OPENCV_LFLAG_IMGPROC", 
+    "CK_ENV_LIB_OPENCV_LFLAG_HIGHGUI", 
+    "CK_ENV_LIB_OPENCV_LFLAG_CORE", 
+    "CK_ENV_LIB_OPENCV_LFLAG_IMGCODECS"
+  ], 
+  "only_for_target_os_tags": [
+    "linux"
+  ], 
+  "process_in_tmp": "yes", 
+  "program": "yes", 
+  "run_cmds": {
+    "default": {
+      "run_time": {
+        "run_cmd_main": "$#BIN_FILE#$"
+      }
+    }
+  }, 
+  "run_deps": {
+    "caffemodel": {
+      "local": "yes", 
+      "name": "Caffe model (net and weights)", 
+      "sort": 10, 
+      "tags": "caffemodel,ssd"
+    }, 
+    "dataset": {
+      "local": "yes", 
+      "name": "Detection dataset", 
+      "sort": 20, 
+      "tags": "dataset,images,object-detection"
+    } 
+  }, 
+  "run_vars": {
+    "CK_BATCH_COUNT": 1, 
+    "CK_BATCH_SIZE": 1, 
+    "CK_SKIP_IMAGES": 0
+  }, 
+  "skip_bin_ext": "yes", 
+  "source_files": [
+    "detection.cpp"
+  ], 
+  "target_file": "detection"
+}

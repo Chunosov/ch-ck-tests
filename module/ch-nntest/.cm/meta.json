@@ -1,0 +1,9 @@
+{
+  "actions": {
+    "make": {
+      "desc": "Make reference output"
+    }, 
+    "validate": {}
+  }, 
+  "desc": "Service module for nntest programs"
+}
