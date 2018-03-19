@@ -1,0 +1,29 @@
+{
+  "compile_deps": {
+    "compiler": {
+      "local": "yes", 
+      "name": "C compiler", 
+      "sort": 0, 
+      "tags": "compiler,lang-c"
+    }
+  },
+  "process_in_tmp": "yes", 
+  "program": "yes",
+  "main_language": "c", 
+  "only_for_target_os_tags": [
+    "linux",
+    "android"
+  ],
+  "run_cmds": {
+    "default": {
+      "run_time": {
+        "run_cmd_main": "$#BIN_FILE#$"
+      }
+    }
+  },
+  "source_files": [
+    "hello.c"
+  ],
+  "skip_bin_ext": "yes",
+  "target_file": "hello"
+}
