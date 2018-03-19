@@ -9,7 +9,8 @@
   },
   "process_in_tmp": "yes", 
   "program": "yes",
-  "main_language": "c", 
+  "main_language": "c",
+  "compiler_flags_as_env": "-Wno-attributes",
   "only_for_target_os_tags": [
     "linux",
     "android"

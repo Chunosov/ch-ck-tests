@@ -10,7 +10,16 @@
   "process_in_tmp": "yes", 
   "program": "yes",
   "compiler_env": "CK_CXX",
-  "main_language": "cpp", 
+  "main_language": "cpp",
+  "compiler_flags_as_env": "$<<CK_COMPILER_FLAG_CPP11>>$",
+  "compiler_add_include_as_env_from_deps": [
+    "CK_ENV_LIB_STDCPP_INCLUDE", 
+    "CK_ENV_LIB_STDCPP_INCLUDE_EXTRA"
+  ], 
+  "linker_add_lib_as_env": [
+    "CK_CXX_EXTRA", 
+    "CK_ENV_LIB_STDCPP_STATIC"
+  ],
   "only_for_target_os_tags": [
     "linux",
     "android"

@@ -13,7 +13,12 @@ ck compile program:ch-hello-world-c
 ### Android
 Build program for Android:
 ```
-ck compile program:ch-hello-world-cpp --target_os=android23-arm64
+ck compile program:ch-hello-world-c --target_os=android23-arm
+ck compile program:ch-hello-world-c --target_os=android23-arm64
+ck compile program:ch-hello-world-c --target_os=android23-x86
+ck compile program:ch-hello-world-c --target_os=android23-x86_64
+ck compile program:ch-hello-world-c --target_os=android14-mips
+ck compile program:ch-hello-world-c --target_os=android21-mips64
 ```
 To list all available android targets use:
 ```
