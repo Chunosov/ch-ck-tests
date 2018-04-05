@@ -1,0 +1,45 @@
+{
+  "compile_deps": {
+    "compiler": {
+      "local": "yes", 
+      "name": "C++ compiler", 
+      "sort": 0, 
+      "tags": "compiler,lang-cpp"
+    },
+    "gemmlowp": {
+      "local": "yes", 
+      "name": "gemmlowp", 
+      "sort": 1, 
+      "tags": "lib,gemmlowp"
+    }
+  },
+  "process_in_tmp": "yes", 
+  "program": "yes",
+  "compiler_env": "CK_CXX",
+  "main_language": "cpp",
+  "compiler_flags_as_env": "$<<CK_COMPILER_FLAG_CPP11>>$",
+  "compiler_add_include_as_env_from_deps": [
+    "CK_ENV_LIB_STDCPP_INCLUDE", 
+    "CK_ENV_LIB_STDCPP_INCLUDE_EXTRA",
+    "CK_ENV_LIB_GEMMLOWP"
+  ], 
+  "linker_add_lib_as_env": [
+    "CK_CXX_EXTRA", 
+    "CK_ENV_LIB_STDCPP_STATIC"
+  ],
+  "only_for_target_os_tags": [
+    "linux"
+  ],
+  "run_cmds": {
+    "default": {
+      "run_time": {
+        "run_cmd_main": "$#BIN_FILE#$"
+      }
+    }
+  },
+  "source_files": [
+    "tests.cpp"
+  ],
+  "skip_bin_ext": "yes",
+  "target_file": "fp_funcs"
+}
