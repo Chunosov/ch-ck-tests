@@ -1,0 +1,15 @@
+{
+  "backup_data_uid": "cf269dbcc2154f3f",
+  "backup_module_uid": "032630d041b4fd8a",
+  "backup_module_uoa": "module",
+  "control": {
+    "engine": "CK",
+    "iso_datetime": "2018-04-11T10:50:09.590083",
+    "version": [
+      "1",
+      "9",
+      "4"
+    ]
+  },
+  "data_name": "ch-mobilenets"
+}

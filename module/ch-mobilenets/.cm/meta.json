@@ -1,0 +1,23 @@
+{
+  "actions": {
+    "install_v2": {
+      "desc": "Install set of mobilenet-v2 packages"
+    },
+    "make-v2": {
+      "desc": "Make set of mobilenet-v2 packages"
+    },
+    "make_v2": {
+      "desc": "Make set of mobilenet-v2 packages"
+    },
+    "rm_v2": {
+      "desc": "Remove set of mobilenets-v2 packages"
+    },
+    "update-meta-v2": {
+      "desc": "Update meta.json of mobilenet-v2 packages"
+    },
+    "update_meta_v2": {
+      "desc": "Update meta.json of mobilenet-v2 packages"
+    }
+  },
+  "desc": "Utility methods to manage bunch of mobilenet packages"
+}
