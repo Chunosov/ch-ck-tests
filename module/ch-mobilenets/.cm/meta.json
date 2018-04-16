@@ -1,5 +1,11 @@
 {
   "actions": {
+    "gen_deps_v1": {
+      "desc": "Generate deps list for aggregate package"
+    },
+    "gen_deps_v2": {
+      "desc": "Generate deps list for aggregate package"
+    },
     "install_v2": {
       "desc": "Install set of mobilenet-v2 packages"
     },
@@ -14,6 +20,12 @@
     },
     "update-meta-v2": {
       "desc": "Update meta.json of mobilenet-v2 packages"
+    },
+    "update_meta_v1": {
+      "desc": "Update meta.json of mobilenet-v1 packages"
+    },
+    "update_meta_v1_npy": {
+      "desc": "Update meta.json for mobilenet-v1 npy weights packages"
     },
     "update_meta_v2": {
       "desc": "Update meta.json of mobilenet-v2 packages"
