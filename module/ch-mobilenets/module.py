@@ -84,6 +84,7 @@ def set_target_repo(repo):
 
 def get_package_name(version, multiplier, resolution):
   if TARGET_REPO == REPO_TF:
+    #return 'tensorflowmodel-mobilenet-v{}-{}-{}-2018_02_22-py'.format(version, multiplier, resolution)
     return 'tensorflowmodel-mobilenet-v{}-{}-{}-py'.format(version, multiplier, resolution)
   if TARGET_REPO == REPO_ARMCL:
     return 'weights-mobilenet-v{}-{}-{}-npy'.format(version, multiplier, resolution)
@@ -143,37 +144,129 @@ def find_package(package_name):
 
 
 ########################################################################
-# Makes meta.json for
-# ck-tensorflow:package:tensorflowmodel-mobilenet-*-py
-# packages
+########################################################################
+# Initialize module
 
-def make_meta(version, multiplier, resolution):
-  if version == "1":
-    package_name = "mobilenet_v1_{}_{}_2017_06_14.tar.gz".format(multiplier, resolution)
-    package_url = "http://download.tensorflow.org/models"
-  elif version == "2":
-    package_name = "mobilenet_v2_{}_{}.tgz".format(multiplier, resolution)
-    package_url = "https://storage.googleapis.com/mobilenet_v2/checkpoints"
-  else:
-    raise Exception('Unsupported package version: ' + version)
-  
+def init(i):
+  """ Input:  {}
+      Output: { return  - error code or 0 if successful
+                (error) - error text if return > 0 } """
+  return {'return': 0}
+
+
+########################################################################
+########################################################################
+
+def make_package(version, multiplier, resolution):
+  package_name = get_package_name(version, multiplier, resolution)
+  color_out(Colors.HEADER, '\n' + package_name)
+
+  res = find_package(package_name)
+  if res['return'] > 0: return res
+
+  if res['package']:
+    ck.out('Already exists, skip')
+    return {'return': 0}
+
+  ck.out('Making...')
+
+  res = ck.access({'action': 'add',
+                   'repo_uoa': TARGET_REPO,
+                   'module_uoa': 'package',
+                   'data_uoa': package_name})
+  if res['return'] > 0: return res
+
+  color_out(Colors.OKGREEN, 'Done')
+  return {'return': 0}
+
+
+# Make set of mobilenet-v1 packages
+def make_v1(i):
+  """ Input:  {}
+      Output: { return  - error code or 0 if successful
+                (error) - error text if return > 0 } """
+  set_target_repo(REPO_TF)
+  for multiplier, resolution in PACKAGE_FLAVOURS_V1:
+    res = make_package('1', multiplier, resolution)
+    if res['return'] > 0: return res
+  return {'return': 0}
+
+
+# Make set of mobilenet-v2 packages
+def make_v2(i):
+  """ Input:  {}
+      Output: { return  - error code or 0 if successful
+                (error) - error text if return > 0 } """
+  set_target_repo(REPO_TF)
+  for multiplier, resolution in PACKAGE_FLAVOURS_V2:
+    res = make_package('2', multiplier, resolution)
+    if res['return'] > 0: return res
+  return {'return': 0}
+
+
+########################################################################
+########################################################################
+
+# Remove set of mobilenet-v2 packages
+def rm_v2(i):
+  """ Input:  {}
+      Output: { return  - error code or 0 if successful
+                (error) - error text if return > 0 } """
+  ck.out('Remove set of mobilenet-v2 packages')
+  set_target_repo(REPO_TF)
+
+  for multiplier, resolution in PACKAGE_FLAVOURS_V2:
+    package_name = get_package_name('2', multiplier, resolution)
+    color_out(Colors.HEADER, '\n' + package_name)
+
+    res = find_package(package_name)
+    if res['return'] > 0:
+      return res
+
+    package = res['package']
+    if not package:
+      ck.out('Skip')
+      continue
+
+    ck.out('Removing...')
+    
+    res = ck.access({'action': 'rm',
+                     'repo_uoa': TARGET_REPO,
+                     'module_uoa': 'package',
+                     'data_uoa': package_name})
+    if res['return'] > 0:
+      return res
+
+    color_out(Colors.OKGREEN, 'Done')
+
+  return {'return': 0}
+
+
+########################################################################
+########################################################################
+
+# Makes meta.json for ck-tensorflow:package:tensorflowmodel-mobilenet-*-py packages
+def make_meta_v1_2017_06_14(multiplier, resolution):
   return {
     "check_exit_status": "yes", 
     "customize": {
       "install_env": {
         "MODEL_MOBILENET_MULTIPLIER": multiplier, 
         "MODEL_MOBILENET_RESOLUTION": resolution, 
-        "MODEL_MOBILENET_VERSION": version, 
+        "MODEL_MOBILENET_VERSION": "1", 
         "MODEL_WEIGHTS_ARE_CHECKPOINTS": "YES", 
         "MODULE_FILE": "mobilenet-model.py", 
-        "PACKAGE_NAME": package_name, 
-        "PACKAGE_URL": package_url, 
-        "WEIGHTS_FILE": "mobilenet_v{}_{}_{}.ckpt".format(version, multiplier, resolution)
+        "PACKAGE_NAME": "mobilenet_v1_{}_{}_2017_06_14.tar.gz".format(multiplier, resolution), 
+        "PACKAGE_URL": "http://download.tensorflow.org/models",
+        "WEIGHTS_FILE": "mobilenet_v1_{}_{}.ckpt".format(multiplier, resolution),
+        "MODEL_IMAGE_HEIGHT": resolution,
+        "MODEL_IMAGE_WIDTH": resolution,
+        "MODEL_NORMALIZE_DATA": "YES"
       }, 
       "no_os_in_suggested_path": "yes", 
       "no_ver_in_suggested_path": "yes", 
       "skip_file_check": "yes", 
-      "version": "{}_{}_{}".format(version, multiplier, resolution)
+      "version": "1_{}_{}".format(multiplier, resolution)
     }, 
     "end_full_path": {
       "linux": "mobilenet-model.py"
@@ -184,17 +277,18 @@ def make_meta(version, multiplier, resolution):
     "only_for_target_os_tags": [
       "linux"
     ], 
-    "package_extra_name": " (mobilenet-v{}-{}-{})".format(version, multiplier, resolution), 
+    "package_extra_name": " (mobilenet-v1-{}-{})".format(multiplier, resolution), 
     "process_script": "install", 
     "soft_uoa": "439b9f1757f27091", 
-    "suggested_path": "tensorflowmodel-mobilenet-v{}-{}-{}-py".format(version, multiplier, resolution),
+    "suggested_path": "tensorflowmodel-mobilenet-v1-{}-{}-py".format(multiplier, resolution),
     "tags": [
       "tensorflowmodel", 
       "weights", 
       "python", 
       "mobilenet", 
-      "mobilenet-v{}".format(version), 
-      "mobilenet-v{}-{}-{}".format(version, multiplier, resolution)
+      "mobilenet-v1",
+      "mobilenet-v1-{}-{}".format(multiplier, resolution),
+      "2017_06_14"
     ], 
     "use_scripts_from_another_entry": {
       "data_uoa": "6b1b2b254718b69a",
@@ -203,11 +297,108 @@ def make_meta(version, multiplier, resolution):
   }
 
 
-########################################################################
-# Makes meta.json for
-# ck-request-asplos18-mobilenets-armcl-opencl:package:weights-mobilenet-*-npy
-# packages
+def make_meta_2018_02_22(multiplier, resolution):
+  date = "2018_02_22"
+  return {
+    "check_exit_status": "yes",
+    "customize": {
+      "install_env": {
+        "MODEL_MOBILENET_MULTIPLIER": multiplier, 
+        "MODEL_MOBILENET_RESOLUTION": resolution, 
+        "MODEL_MOBILENET_VERSION": "1", 
+        "MODEL_WEIGHTS_ARE_CHECKPOINTS": "YES", 
+        "MODULE_FILE": "mobilenet-model.py", 
+        "PACKAGE_NAME": "mobilenet_v1_{}_{}.tgz".format(multiplier, resolution), 
+        "PACKAGE_URL": "http://download.tensorflow.org/models/mobilenet_v1_2018_02_22",
+        "WEIGHTS_FILE": "mobilenet_v1_{}_{}.ckpt".format(multiplier, resolution),
+        "MODEL_IMAGE_HEIGHT": resolution,
+        "MODEL_IMAGE_WIDTH": resolution,
+        "MODEL_NORMALIZE_DATA": "YES"
+      }, 
+      "no_os_in_suggested_path": "yes", 
+      "no_ver_in_suggested_path": "yes", 
+      "skip_file_check": "yes", 
+      "version": "1_{}_{}_{}".format(multiplier, resolution, date)
+    }, 
+    "end_full_path": {
+      "linux": "mobilenet-model.py"
+    }, 
+    "only_for_host_os_tags": [
+      "linux"
+    ], 
+    "only_for_target_os_tags": [
+      "linux"
+    ], 
+    "package_extra_name": " (mobilenet-v1-{}-{}-{})".format(multiplier, resolution, date), 
+    "process_script": "install", 
+    "soft_uoa": "439b9f1757f27091", 
+    "suggested_path": "tensorflowmodel-mobilenet-v1-{}-{}-{}-py".format(multiplier, resolution, date),
+    "tags": [
+      "tensorflowmodel", 
+      "weights", 
+      "python", 
+      "mobilenet", 
+      "mobilenet-v1",
+      "mobilenet-v1-{}-{}".format(multiplier, resolution),
+      date
+    ], 
+    "use_scripts_from_another_entry": {
+      "data_uoa": "6b1b2b254718b69a",
+      "module_uoa": "script"
+    }
+  }
 
+
+def make_meta_v2(multiplier, resolution):
+  return {
+    "check_exit_status": "yes", 
+    "customize": {
+      "install_env": {
+        "MODEL_MOBILENET_MULTIPLIER": multiplier, 
+        "MODEL_MOBILENET_RESOLUTION": resolution, 
+        "MODEL_MOBILENET_VERSION": "2", 
+        "MODEL_WEIGHTS_ARE_CHECKPOINTS": "YES", 
+        "MODULE_FILE": "mobilenet-model.py", 
+        "PACKAGE_NAME": "mobilenet_v2_{}_{}.tgz".format(multiplier, resolution), 
+        "PACKAGE_URL": "https://storage.googleapis.com/mobilenet_v2/checkpoints", 
+        "WEIGHTS_FILE": "mobilenet_v2_{}_{}.ckpt".format(multiplier, resolution),
+        "MODEL_IMAGE_HEIGHT": resolution,
+        "MODEL_IMAGE_WIDTH": resolution,
+        "MODEL_NORMALIZE_DATA": "YES"
+      }, 
+      "no_os_in_suggested_path": "yes", 
+      "no_ver_in_suggested_path": "yes", 
+      "skip_file_check": "yes", 
+      "version": "2_{}_{}".format(multiplier, resolution)
+    }, 
+    "end_full_path": {
+      "linux": "mobilenet-model.py"
+    }, 
+    "only_for_host_os_tags": [
+      "linux"
+    ], 
+    "only_for_target_os_tags": [
+      "linux"
+    ], 
+    "package_extra_name": " (mobilenet-v2-{}-{})".format(multiplier, resolution), 
+    "process_script": "install", 
+    "soft_uoa": "439b9f1757f27091", 
+    "suggested_path": "tensorflowmodel-mobilenet-v2-{}-{}-py".format(multiplier, resolution),
+    "tags": [
+      "tensorflowmodel", 
+      "weights", 
+      "python", 
+      "mobilenet", 
+      "mobilenet-v2", 
+      "mobilenet-v2-{}-{}".format(multiplier, resolution)
+    ], 
+    "use_scripts_from_another_entry": {
+      "data_uoa": "6b1b2b254718b69a",
+      "module_uoa": "script"
+    }
+  }
+
+# Makes meta.json for ck-request-asplos18-mobilenets-armcl-opencl:package:weights-mobilenet-*-npy packages
 def make_meta_npy(version, multiplier, resolution):
   urls = {
     '1_0.25_128': "https://www.dropbox.com/s/1nr0k4qr3yc1e3f/mobilenet_v1_0.25_128.npy.zip",
@@ -269,113 +460,12 @@ def make_meta_npy(version, multiplier, resolution):
   }
 
 
-########################################################################
-# Initialize module
-
-def init(i):
-  """
-  Input:  {}
-  Output: {
-            return       - return code =  0, if successful
-                                       >  0, if error
-            (error)      - error text if return > 0
-          }
-  """
-  return {'return': 0}
-
-
-########################################################################
-# Make set of mobilenet-v2 packages
-
-def make_v2(i):
-  """
-  Input:  {}
-  Output: {
-            return       - return code =  0, if successful
-                                       >  0, if error
-            (error)      - error text if return > 0
-          }
-  """
-  ck.out('Make set of mobilenet-v2 packages')
-  set_target_repo(REPO_TF)
-
-  for multiplier, resolution in PACKAGE_FLAVOURS_V2:
-    package_name = get_package_name('2', multiplier, resolution)
-    color_out(Colors.HEADER, '\n' + package_name)
-
-    res = find_package(package_name)
-    if res['return'] > 0:
-      return res
-
-    if res['package']:
-      ck.out('Already exists, skip')
-      continue
-
-    ck.out('Making...')
-
-    res = ck.access({'action': 'add',
-                     'repo_uoa': TARGET_REPO,
-                     'module_uoa': 'package',
-                     'data_uoa': package_name})
-    if res['return'] > 0:
-      return res
-
-    color_out(Colors.OKGREEN, 'Done')
-
-  return {'return': 0}
-
-
-##############################################################################
-# Remove set of mobilenet-v2 packages
-
-def rm_v2(i):
-  """
-  Input:  {}
-  Output: {
-            return       - return code =  0, if successful
-                                       >  0, if error
-            (error)      - error text if return > 0
-          }
-  """
-  ck.out('Remove set of mobilenet-v2 packages')
-  set_target_repo(REPO_TF)
-
-  for multiplier, resolution in PACKAGE_FLAVOURS_V2:
-    package_name = get_package_name('2', multiplier, resolution)
-    color_out(Colors.HEADER, '\n' + package_name)
-
-    res = find_package(package_name)
-    if res['return'] > 0:
-      return res
-
-    package = res['package']
-    if not package:
-      ck.out('Skip')
-      continue
-
-    ck.out('Removing...')
-    
-    res = ck.access({'action': 'rm',
-                     'repo_uoa': TARGET_REPO,
-                     'module_uoa': 'package',
-                     'data_uoa': package_name})
-    if res['return'] > 0:
-      return res
-
-    color_out(Colors.OKGREEN, 'Done')
-
-  return {'return': 0}
-
-
-########################################################################
-
 def update_meta(version, multiplier, resolution, make_meta_func):
   package_name = get_package_name(version, multiplier, resolution)
   color_out(Colors.HEADER, '\n' + package_name)
 
   res = find_package(package_name)
-  if res['return'] > 0:
-    return res
+  if res['return'] > 0: return res
 
   package = res['package']
   if not package:
@@ -384,13 +474,51 @@ def update_meta(version, multiplier, resolution, make_meta_func):
 
   ck.out('Processing in {} ...'.format(package['path']))
 
-  meta = make_meta_func(version, multiplier, resolution)
+  meta = make_meta_func(multiplier, resolution)
   save_meta(package, meta)
 
   color_out(Colors.OKGREEN, 'Done')
   return {'return': 0}
 
 
+# Update meta.json of mobilenet-v1 packages
+def update_meta_v1(i):
+  """ Input:  {}
+      Output: { return  - error code or 0 if successful
+                (error) - error text if return > 0 } """
+  set_target_repo(REPO_TF)
+  for multiplier, resolution in PACKAGE_FLAVOURS_V1:
+    #res = update_meta('1', multiplier, resolution, make_meta_v1_2017_06_14)
+    res = update_meta('1', multiplier, resolution, make_meta_2018_02_22)
+    if res['return'] > 0: return res
+  return {'return': 0}
+
+
+# Update meta.json of mobilenet-v2 packages
+def update_meta_v2(i):
+  """ Input:  {}
+      Output: { return  - error code or 0 if successful
+                (error) - error text if return > 0 } """
+  set_target_repo(REPO_TF)
+  for multiplier, resolution in PACKAGE_FLAVOURS_V2:
+    res = update_meta('2', multiplier, resolution, make_meta_v2)
+    if res['return'] > 0: return res
+  return {'return': 0}
+
+
+# Update meta.json for mobilenet-v1 npy weights packages
+def update_meta_v1_npy(i):
+  """ Input:  {}
+      Output: { return  - error code or 0 if successful
+                (error) - error text if return > 0 } """
+  set_target_repo(REPO_ARMCL)
+  for multiplier, resolution in PACKAGE_FLAVOURS_V1:
+    res = update_meta('1', multiplier, resolution, make_meta_npy)
+    if res['return'] > 0: return res
+  return {'return': 0}
+
+
+##############################################################################
 ##############################################################################
 
 def add_dep(deps, sort, version, multiplier, resolution):
@@ -403,90 +531,11 @@ def add_dep(deps, sort, version, multiplier, resolution):
   }
 
 
-##############################################################################
-# Update meta.json of mobilenet-v1 packages
-
-def update_meta_v1(i):
-  """
-  Input:  {}
-  Output: {
-            return       - return code =  0, if successful
-                                       >  0, if error
-            (error)      - error text if return > 0
-          }
-  """
-  ck.out('Update meta.json of mobilenet-v1 packages')
-  set_target_repo(REPO_TF)
-
-  for multiplier, resolution in PACKAGE_FLAVOURS_V1:
-    res = update_meta('1', multiplier, resolution, make_meta)
-    if res['return'] > 0:
-      return res
-
-  return {'return': 0}
-
-
-########################################################################
-# Update meta.json of mobilenet-v2 packages
-
-def update_meta_v2(i):
-  """
-  Input:  {}
-  Output: {
-            return       - return code =  0, if successful
-                                       >  0, if error
-            (error)      - error text if return > 0
-          }
-  """
-  ck.out('Update meta.json of mobilenet-v2 packages')
-  set_target_repo(REPO_TF)
-
-  for multiplier, resolution in PACKAGE_FLAVOURS_V2:
-    res = update_meta('2', multiplier, resolution, make_meta)
-    if res['return'] > 0:
-      return res
-
-  return {'return': 0}
-
-
-
-##############################################################################
-# Update meta.json for mobilenet-v1 npy weights packages
-
-def update_meta_v1_npy(i):
-  """
-  Input:  {}
-  Output: {
-            return       - return code =  0, if successful
-                                       >  0, if error
-            (error)      - error text if return > 0
-          }
-  """
-  ck.out('Update meta.json for mobilenet-v1 npy weights packages')
-  set_target_repo(REPO_ARMCL)
-
-  for multiplier, resolution in PACKAGE_FLAVOURS_V1:
-    res = update_meta('1', multiplier, resolution, make_meta_npy)
-    if res['return'] > 0:
-      return res
-
-  return {'return': 0}
-
-
-##############################################################################
 # Generate deps list for aggregate package
-
 def gen_deps_v1(i):
-  """
-  Input:  {}
-  Output: {
-            return       - return code =  0, if successful
-                                       >  0, if error
-            (error)      - error text if return > 0
-          }
-  """
-  ck.out('Generate deps list for aggregate package')
-
+  """ Input:  {}
+      Output: { return  - error code or 0 if successful
+                (error) - error text if return > 0 } """
   root = {}
   deps = {}
   sort = 1
@@ -498,20 +547,11 @@ def gen_deps_v1(i):
   return {'return': 0}
 
 
-##############################################################################
 # Generate deps list for aggregate package
-
 def gen_deps_v2(i):
-  """
-  Input:  {}
-  Output: {
-            return       - return code =  0, if successful
-                                       >  0, if error
-            (error)      - error text if return > 0
-          }
-  """
-  ck.out('Generate deps list for aggregate package')
-
+  """ Input:  {}
+      Output: { return  - error code or 0 if successful
+                (error) - error text if return > 0 } """
   root = {}
   deps = {}
   sort = 1

@@ -12,6 +12,9 @@
     "make-v2": {
       "desc": "Make set of mobilenet-v2 packages"
     },
+    "make_v1": {
+      "desc": "Make set of mobilenet-v1 packages\u001b[F"
+    },
     "make_v2": {
       "desc": "Make set of mobilenet-v2 packages"
     },
