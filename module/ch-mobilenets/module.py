@@ -27,6 +27,8 @@ TARGET_REPO = None
 REPO_TF = 'ck-tensorflow'
 REPO_ARMCL = 'ck-request-asplos18-mobilenets-armcl-opencl'
 
+PROCESS_MOBILENETS_V1_2018 = True
+
 PACKAGE_FLAVOURS_V1 = [
   ( '0.25', '128' ),
   ( '0.25', '160' ),
@@ -84,8 +86,10 @@ def set_target_repo(repo):
 
 def get_package_name(version, multiplier, resolution):
   if TARGET_REPO == REPO_TF:
-    #return 'tensorflowmodel-mobilenet-v{}-{}-{}-2018_02_22-py'.format(version, multiplier, resolution)
-    return 'tensorflowmodel-mobilenet-v{}-{}-{}-py'.format(version, multiplier, resolution)
+    if PROCESS_MOBILENETS_V1_2018:
+      return 'tensorflowmodel-mobilenet-v{}-{}-{}-2018_02_22-py'.format(version, multiplier, resolution)
+    else:
+      return 'tensorflowmodel-mobilenet-v{}-{}-{}-py'.format(version, multiplier, resolution)
   if TARGET_REPO == REPO_ARMCL:
     return 'weights-mobilenet-v{}-{}-{}-npy'.format(version, multiplier, resolution)
   raise Exception('Unsupported target repo: ' + TARGET_REPO)
@@ -297,20 +301,26 @@ def make_meta_v1_2017_06_14(multiplier, resolution):
   }
 
 
-def make_meta_2018_02_22(multiplier, resolution):
+def make_meta_v1_2018_02_22(multiplier, resolution):
+  # There is no trailing zero in new version of weights
+  if multiplier == "0.50":
+    multiplier_1 = "0.5"
+  else:
+    multiplier_1 = multiplier
+
   date = "2018_02_22"
   return {
     "check_exit_status": "yes",
     "customize": {
       "install_env": {
-        "MODEL_MOBILENET_MULTIPLIER": multiplier, 
+        "MODEL_MOBILENET_MULTIPLIER": multiplier_1, 
         "MODEL_MOBILENET_RESOLUTION": resolution, 
         "MODEL_MOBILENET_VERSION": "1", 
         "MODEL_WEIGHTS_ARE_CHECKPOINTS": "YES", 
         "MODULE_FILE": "mobilenet-model.py", 
-        "PACKAGE_NAME": "mobilenet_v1_{}_{}.tgz".format(multiplier, resolution), 
+        "PACKAGE_NAME": "mobilenet_v1_{}_{}.tgz".format(multiplier_1, resolution), 
         "PACKAGE_URL": "http://download.tensorflow.org/models/mobilenet_v1_2018_02_22",
-        "WEIGHTS_FILE": "mobilenet_v1_{}_{}.ckpt".format(multiplier, resolution),
+        "WEIGHTS_FILE": "mobilenet_v1_{}_{}.ckpt".format(multiplier_1, resolution),
         "MODEL_IMAGE_HEIGHT": resolution,
         "MODEL_IMAGE_WIDTH": resolution,
         "MODEL_NORMALIZE_DATA": "YES"
@@ -487,9 +497,14 @@ def update_meta_v1(i):
       Output: { return  - error code or 0 if successful
                 (error) - error text if return > 0 } """
   set_target_repo(REPO_TF)
+  
+  if PROCESS_MOBILENETS_V1_2018:
+    make_meta_func = make_meta_v1_2018_02_22
+  else:
+    make_meta_func = make_meta_v1_2017_06_14
+
   for multiplier, resolution in PACKAGE_FLAVOURS_V1:
-    #res = update_meta('1', multiplier, resolution, make_meta_v1_2017_06_14)
-    res = update_meta('1', multiplier, resolution, make_meta_2018_02_22)
+    res = update_meta('1', multiplier, resolution, make_meta_func)
     if res['return'] > 0: return res
   return {'return': 0}
 
