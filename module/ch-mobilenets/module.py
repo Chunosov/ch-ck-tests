@@ -86,7 +86,7 @@ def set_target_repo(repo):
 
 def get_package_name(version, multiplier, resolution):
   if TARGET_REPO == REPO_TF:
-    if PROCESS_MOBILENETS_V1_2018:
+    if PROCESS_MOBILENETS_V1_2018 and version == '1':
       return 'tensorflowmodel-mobilenet-v{}-{}-{}-2018_02_22-py'.format(version, multiplier, resolution)
     else:
       return 'tensorflowmodel-mobilenet-v{}-{}-{}-py'.format(version, multiplier, resolution)
@@ -331,13 +331,15 @@ def make_meta_v1_2018_02_22(multiplier, resolution):
       "version": "1_{}_{}_{}".format(multiplier, resolution, date)
     }, 
     "end_full_path": {
-      "linux": "mobilenet-model.py"
+      "linux": "mobilenet-model.py",
+      "android": "mobilenet-model.py"
     }, 
     "only_for_host_os_tags": [
       "linux"
     ], 
     "only_for_target_os_tags": [
-      "linux"
+      "linux",
+      "android"
     ], 
     "package_extra_name": " (mobilenet-v1-{}-{}-{})".format(multiplier, resolution, date), 
     "process_script": "install", 
@@ -382,13 +384,15 @@ def make_meta_v2(multiplier, resolution):
       "version": "2_{}_{}".format(multiplier, resolution)
     }, 
     "end_full_path": {
-      "linux": "mobilenet-model.py"
+      "linux": "mobilenet-model.py",
+      "android": "mobilenet-model.py"
     }, 
     "only_for_host_os_tags": [
       "linux"
     ], 
     "only_for_target_os_tags": [
-      "linux"
+      "linux",
+      "android"
     ], 
     "package_extra_name": " (mobilenet-v2-{}-{})".format(multiplier, resolution), 
     "process_script": "install", 
@@ -533,8 +537,8 @@ def update_meta_v1_npy(i):
   return {'return': 0}
 
 
-##############################################################################
-##############################################################################
+########################################################################
+########################################################################
 
 def add_dep(deps, sort, version, multiplier, resolution):
   package_name = 'mobilenet-v{}-{}-{}'.format(version, multiplier, resolution)
