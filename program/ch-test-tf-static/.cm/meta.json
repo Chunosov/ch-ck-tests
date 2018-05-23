@@ -1,0 +1,54 @@
+{
+  "backup_data_uid": "fa43e702fd462a1e",
+  "compile_deps": {
+    "compiler": {
+      "local": "yes",
+      "name": "C++ compiler",
+      "sort": 0,
+      "tags": "compiler,lang-cpp"
+    },
+    "library": {
+      "local": "yes", 
+      "name": "TensorFlow C++ API", 
+      "sort": 10, 
+      "tags": "lib,tensorflow,vstatic"
+    }
+  },
+  "compiler_add_include_as_env_from_deps": [
+    "CK_ENV_LIB_STDCPP_INCLUDE",
+    "CK_ENV_LIB_STDCPP_INCLUDE_EXTRA",
+    "CK_ENV_LIB_TF_INCLUDE0",
+    "CK_ENV_LIB_TF_INCLUDE1",
+    "CK_ENV_LIB_TF_INCLUDE2",
+    "CK_ENV_LIB_TF_INCLUDE3",
+    "CK_ENV_LIB_TF_INCLUDE4",
+    "CK_ENV_LIB_TF_INCLUDE5"
+  ],
+  "compiler_env": "CK_CXX",
+  "compiler_flags_as_env": "$<<CK_COMPILER_FLAG_CPP11>>$",
+  "data_name": "ch-test-tf-android",
+  "extra_ld_vars": "$<<CK_ENV_LIB_TF_LINK_OPTIONS>>$ $<<CK_ENV_LIB_TF_LIBS_DIRS>>$ $<<CK_ENV_LIB_TF_LIBS>>$",
+  "linker_add_lib_as_env": [
+    "CK_CXX_EXTRA",
+    "CK_ENV_LIB_STDCPP_STATIC"
+  ],
+  "main_language": "cpp",
+  "only_for_target_os_tags": [
+    "linux",
+    "android"
+  ],
+  "process_in_tmp": "yes",
+  "program": "yes",
+  "run_cmds": {
+    "default": {
+      "run_time": {
+        "run_cmd_main": "$#BIN_FILE#$"
+      }
+    }
+  },
+  "skip_bin_ext": "yes",
+  "source_files": [
+    "classify.cpp"
+  ],
+  "target_file": "classify"
+}
