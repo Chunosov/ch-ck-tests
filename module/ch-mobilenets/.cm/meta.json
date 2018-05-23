@@ -27,6 +27,7 @@
     "update_meta_v1": {
       "desc": "Update meta.json of mobilenet-v1 packages"
     },
+    "update_meta_v1_2018": {},
     "update_meta_v1_npy": {
       "desc": "Update meta.json for mobilenet-v1 npy weights packages"
     },

@@ -23,11 +23,17 @@ class Colors:
   BOLD = '\033[1m'
   UNDERLINE = '\033[4m'
 
-TARGET_REPO = None
 REPO_TF = 'ck-tensorflow'
 REPO_ARMCL = 'ck-request-asplos18-mobilenets-armcl-opencl'
 
-PROCESS_MOBILENETS_V1_2018 = True
+# Target repo is assigned as one of REPO_TF or REPO_ARMCL,
+# depending on which action is run.
+TARGET_REPO = None
+
+# Set this to False if actions `*_v1` should process old version of mobilenet-v1 packages.
+# Old versions are `tensorflowmodel-mobilenet-v1-*-py` packages (2017_06_14).
+# New versions are `tensorflowmodel-mobilenet-v1-*-2018_02_22-py` packages.
+PROCESS_MOBILENETS_V1_2018 = False
 
 PACKAGE_FLAVOURS_V1 = [
   ( '0.25', '128' ),
@@ -347,7 +353,8 @@ def make_meta_v1_2018_02_22(multiplier, resolution):
     "suggested_path": "tensorflowmodel-mobilenet-v1-{}-{}-{}-py".format(multiplier, resolution, date),
     "tags": [
       "tensorflowmodel", 
-      "weights", 
+      "weights",
+      "frozen",
       "python", 
       "mobilenet", 
       "mobilenet-v1",
@@ -401,6 +408,7 @@ def make_meta_v2(multiplier, resolution):
     "tags": [
       "tensorflowmodel", 
       "weights", 
+      "frozen",
       "python", 
       "mobilenet", 
       "mobilenet-v2", 
@@ -501,18 +509,26 @@ def update_meta_v1(i):
       Output: { return  - error code or 0 if successful
                 (error) - error text if return > 0 } """
   set_target_repo(REPO_TF)
-  
-  if PROCESS_MOBILENETS_V1_2018:
-    make_meta_func = make_meta_v1_2018_02_22
-  else:
-    make_meta_func = make_meta_v1_2017_06_14
-
   for multiplier, resolution in PACKAGE_FLAVOURS_V1:
-    res = update_meta('1', multiplier, resolution, make_meta_func)
+    res = update_meta('1', multiplier, resolution, make_meta_v1_2017_06_14)
     if res['return'] > 0: return res
   return {'return': 0}
 
 
+# Update meta.json of mobilenet-v1 packages
+def update_meta_v1_2018(i):
+  """ Input:  {}
+      Output: { return  - error code or 0 if successful
+                (error) - error text if return > 0 } """
+  set_target_repo(REPO_TF)
+  global PROCESS_MOBILENETS_V1_2018
+  PROCESS_MOBILENETS_V1_2018 = True
+  for multiplier, resolution in PACKAGE_FLAVOURS_V1:
+    res = update_meta('1', multiplier, resolution, make_meta_v1_2018_02_22)
+    if res['return'] > 0: return res
+  return {'return': 0}
+
+  
 # Update meta.json of mobilenet-v2 packages
 def update_meta_v2(i):
   """ Input:  {}
