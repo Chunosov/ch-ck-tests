@@ -1,0 +1,54 @@
+{
+  "backup_data_uid": "ecc04aeb8b47316d",
+  "compile_deps": {
+    "compiler": {
+      "local": "yes",
+      "name": "C++ compiler",
+      "sort": 0,
+      "tags": "compiler,lang-cpp"
+    },
+    "library": {
+      "local": "yes", 
+      "name": "TensorFlow Lite C++ API", 
+      "sort": 10, 
+      "tags": "lib,tensorflow-lite,vstatic"
+    }
+  },
+  "compiler_add_include_as_env_from_deps": [
+    "CK_ENV_LIB_STDCPP_INCLUDE",
+    "CK_ENV_LIB_STDCPP_INCLUDE_EXTRA",
+    "CK_ENV_LIB_TF_INCLUDE0",
+    "CK_ENV_LIB_TF_INCLUDE1"
+  ],
+  "compiler_env": "CK_CXX",
+  "compiler_flags_as_env": "$<<CK_COMPILER_FLAG_CPP11>>$",
+  "data_name": "ch-test-tflite",
+  "extra_ld_vars": "$<<CK_ENV_LIB_TF_LIBS_DIRS>>$ $<<CK_ENV_LIB_TF_LIBS>>$",
+  "linker_add_lib_as_env": [
+    "CK_CXX_EXTRA",
+    "CK_ENV_LIB_STDCPP_STATIC"
+  ],
+  "main_language": "cpp",
+  "only_for_target_os_tags": [
+    "linux",
+    "android"
+  ],
+  "process_in_tmp": "yes",
+  "program": "yes",
+  "run_cmds": {
+    "default": {
+      "run_time": {
+        "pre_process_via_ck": {
+          "script_name": "preprocess"
+        },
+        "run_cmd_main": "$#BIN_FILE#$"
+      }
+    }
+  },
+  "skip_bin_ext": "yes",
+  "source_files": [
+    "classify.cpp",
+    "bitmap_helpers.cc"
+  ],
+  "target_file": "classify"
+}
