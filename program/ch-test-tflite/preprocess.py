@@ -10,7 +10,8 @@ import os
 
 def ck_preprocess(i):
   MODEL_FILE = 'mobilenet_quant_v1_224.tflite'
-  IMAGE_FILE = 'test-image.bmp'
+  #IMAGE_FILE = 'test-image.bmp'
+  IMAGE_FILE = 'data.bmp'
   LABELS_FILE = 'labels.txt'
 
   new_env = {}
