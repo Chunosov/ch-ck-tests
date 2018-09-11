@@ -1,10 +1,17 @@
 {
   "actions": {
-    "datasets": {}, 
-    "make": {
-      "desc": "Make reference output"
+    "check_reference_outputs": {
+      "desc": "Check which data-files of specified programs have saved reference ouput"
     }, 
-    "validate": {}
+    "list_datasets": {
+      "desc": "Show datasets of program as CSV text"
+    }, 
+    "make_reference_outputs": {
+      "desc": "Create reference outputs for specified program"
+    }, 
+    "validate": {
+      "desc": "Validate program against saved reference output"
+    }
   }, 
   "desc": "Service module for nntest programs"
 }

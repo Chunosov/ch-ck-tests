@@ -1,15 +1,18 @@
 # nntest helper module
 
-The helper module for [ck nntest](https://github.com/dividiti/ck-acl-private) project (TODO: correct link when project will be released).
+The helper module for [ck nntest](https://github.com/ctuning/ck-nntest) project.
 
 ## Commands
 
-### `make`
+### `make_reference_outputs`
+
+```bash
+ck make_reference_outputs ch-nntest:${PROGRAM_UOA} --output_validation_repo=ck-nntest-outputs
 ```
-ck make ch-nntest:program-uoa --output_validation_repo=ck-nntest-outputs
-```
+
 Iterates over all files of all datasets of given program and stores reference output into `output_validation_repo` if specified or into `local` otherwise. It implements this simple algorithm:
-```
+
+```bash
 for $dataset in `ck search dataset --tags=tags,from,program,meta`:
   for $file in dataset:
     ck run program:program-uoa \
@@ -20,20 +23,44 @@ for $dataset in `ck search dataset --tags=tags,from,program,meta`:
       --overwrite_reference_output
 ```
 
+Example:
+
+```bash
+ck make_reference_outputs ch-nntest:conv-tensorflow-cpu --output_validation_repo=ck-nntest-outputs
+```
+
+### `check_reference_outputs (TBD)`
+
+```bash
+ck check_reference_outputs ch-nntest:${PROGRAM_UOA} --output_validation_repo=ck-nntest-outputs
+```
+
+Check which data-files of a specified program have saved reference ouputs.
+
+Example:
+
+```bash
+$ ck check_reference_outputs ch-nntest:conv-tensorflow-cpu --output_validation_repo=ck-nntest-outputs
+
+```
+
 ### `validate`
 ```
 ck validate ch-nntest:program-uoa
 ```
 Iterates over all files of all datasets of given program and runs program against each file, then analyzes program run result and calculates success statistics and fail reasons.
 
-### `datasets`
+### `list_datasets`
+
+```bash
+ck list_datasets ch-nntest:${PROGRAM_UOA}
 ```
-ck datasets ch-nntest:program-uoa
-```
+
 Prints content of all files of all datasets of given program as one CSV-text.
 
 Example:
-```
+
+```bash
 $ ck datasets ch-nntest:softmax-tensorflow-cpu
 Datasets for program softmax-tensorflow-cpu
 Program dataset tags: dataset,nntest,tensor-softmax
