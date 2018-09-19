@@ -343,13 +343,19 @@ def validate(i):
       color_out(Colors.HEADER, '[{}/{}] {}:{} ...'.format(
         processed_files+1, len(processing_files), dataset_uoa, dataset_file))
 
-      res = ck_access({'action': 'run',
-                       'module_uoa': 'program',
-                       'data_uoa': prog['data_uoa'],
-                       'cmd_key': 'default',
-                       'dataset_uoa': dataset_uoa,
-                       'dataset_file': dataset_file,
-                      })
+      params = {'action': 'run',
+                'module_uoa': 'program',
+                'data_uoa': prog['data_uoa'],
+                'cmd_key': 'default',
+                'dataset_uoa': dataset_uoa,
+                'dataset_file': dataset_file,
+      }
+
+      for key in i:
+        if key.startswith('env.'):
+          params[key] = i[key]
+
+      res = ck_access(params)
 
       processed_files += 1
 
@@ -379,11 +385,12 @@ def validate(i):
         for p in success_shapes:
           ck.out('{}:{}'.format(p[0], p[1]))
       else:
-        ck.out('Failed shapes:')
-        for p in failed_shapes:
-          ck.out('----------------------------------------')
-          color_out(Colors.HEADER, '{}:{}'.format(p['dataset'], p['file']))
-          ck.out(p['reason'])
+        if 'reasons' in i:
+          ck.out('Failed shapes:')
+          for p in failed_shapes:
+            ck.out('----------------------------------------')
+            color_out(Colors.HEADER, '{}:{}'.format(p['dataset'], p['file']))
+            ck.out(p['reason'])
         ck.out('\n----------------------------------------')
         ck.out('Failed shapes (summary): {}'.format(len(failed_shapes)))
         for p in failed_shapes:
