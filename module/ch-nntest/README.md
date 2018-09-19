@@ -46,7 +46,7 @@ $ ck check_reference_outputs ch-nntest:conv-tensorflow-cpu --output_validation_r
 
 ### `validate`
 ```
-ck validate ch-nntest:program-uoa
+ck validate ch-nntest:${PROGRAM_UOA}
 ```
 Iterates over all files of all datasets of given program and runs program against each file, then analyzes program run result and calculates success statistics and fail reasons.
 

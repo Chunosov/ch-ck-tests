@@ -323,88 +323,74 @@ def validate(i):
   Validate program against saved reference output
 
   Params
-  output_validation_repo - output validation repo UOA
   stop_after_fail        - stop processing after first fail
   show_only_successful
   '''
-  data_uoa = i.get('data_uoa')
-  if not data_uoa:
-    return {'return': 1, 'error': 'Program uoa is not specified'}
+  try:
+    prog = get_target_prog(i)
+    ck.out('Validate output for program ' + prog['data_uoa'])
 
-  prog = get_program(data_uoa)
-  if not prog:
-    return {'return': 1, 'error': 'Program not found'}
+    stop_after_fail = i.get('stop_after_fail') == 'yes'
 
-  prog_uoa = prog['data_uoa']
-  ck.out('Validate output for program ' + prog_uoa)
+    processed_files = 0
+    processing_files = get_dataset_files(prog)
+    failed_shapes = []
+    success_shapes = []
 
-  validation_repo = i.get('output_validation_repo')
-  if not validation_repo:
-    validation_repo = 'local'
-    color_out(Colors.WARNING, 'Validation repo is not set, using local')
-
-  stop_after_fail = i.get('stop_after_fail') == 'yes'
-
-  processed_files = 0
-  processing_files = get_dataset_files(prog)
-  failed_shapes = []
-  success_shapes = []
-
-  ck.out('\nProcessing...\n')
-  for dataset_uoa, dataset_file in processing_files:
-    ck.out('\n----------------------------------------')
-    color_out(Colors.HEADER, '[{}/{}] {}:{} ...'.format(
-      processed_files+1, len(processing_files), dataset_uoa, dataset_file))
-
-    res = ck.access({'action': 'run',
-                     'module_uoa': 'program',
-                     'data_uoa': prog_uoa,
-                     'cmd_key': 'default',
-                     'output_validation_repo': validation_repo,
-                     'dataset_uoa': dataset_uoa,
-                     'dataset_file': dataset_file,
-                    })
-    if res['return'] > 0:
-      return res
-
-    processed_files += 1
-
-    if is_ok(res):
-      color_out(Colors.OKGREEN, '****** OK ******')
-      success_shapes.append((dataset_uoa, dataset_file))
-    else:
-      color_out(Colors.FAIL, '****** FAILED ******')
-      failed_shapes.append({
-        'dataset': dataset_uoa,
-        'file': dataset_file,
-        'reason': get_fail_reason(res)
-      })
-      if stop_after_fail:
-        break
-
-  ck.out('\n----------------------------------------')
-  ck.out('Total shapes: {}'.format(len(processing_files)))
-  ck.out('Processed shapes: {}'.format(processed_files))
-  if not failed_shapes:
-    ck.out('\nAll shapes OK\n')
-  else:
-    ck.out('Sucessfull shapes: {}'.format(len(success_shapes)))
-    ck.out('Failed shapes: {}'.format(len(failed_shapes)))
-    if i.get('show_only_successful'):
-      ck.out('Successful shapes:')
-      for p in success_shapes:
-        ck.out('{}:{}'.format(p[0], p[1]))
-    else:
-      ck.out('Failed shapes:')
-      for p in failed_shapes:
-        ck.out('----------------------------------------')
-        color_out(Colors.HEADER, '{}:{}'.format(p['dataset'], p['file']))
-        ck.out(p['reason'])
+    ck.out('\nProcessing...\n')
+    for dataset_uoa, dataset_file in processing_files:
       ck.out('\n----------------------------------------')
-      ck.out('Failed shapes (summary): {}'.format(len(failed_shapes)))
-      for p in failed_shapes:
-        ck.out('{}:{}'.format(p['dataset'], p['file']))
+      color_out(Colors.HEADER, '[{}/{}] {}:{} ...'.format(
+        processed_files+1, len(processing_files), dataset_uoa, dataset_file))
 
+      res = ck_access({'action': 'run',
+                       'module_uoa': 'program',
+                       'data_uoa': prog['data_uoa'],
+                       'cmd_key': 'default',
+                       'dataset_uoa': dataset_uoa,
+                       'dataset_file': dataset_file,
+                      })
+
+      processed_files += 1
+
+      if is_ok(res):
+        color_out(Colors.OKGREEN, '****** OK ******')
+        success_shapes.append((dataset_uoa, dataset_file))
+      else:
+        color_out(Colors.FAIL, '****** FAILED ******')
+        failed_shapes.append({
+          'dataset': dataset_uoa,
+          'file': dataset_file,
+          'reason': get_fail_reason(res)
+        })
+        if stop_after_fail:
+          break
+
+    ck.out('\n----------------------------------------')
+    ck.out('Total shapes: {}'.format(len(processing_files)))
+    ck.out('Processed shapes: {}'.format(processed_files))
+    if not failed_shapes:
+      ck.out('\nAll shapes OK\n')
+    else:
+      ck.out('Sucessfull shapes: {}'.format(len(success_shapes)))
+      ck.out('Failed shapes: {}'.format(len(failed_shapes)))
+      if i.get('show_only_successful'):
+        ck.out('Successful shapes:')
+        for p in success_shapes:
+          ck.out('{}:{}'.format(p[0], p[1]))
+      else:
+        ck.out('Failed shapes:')
+        for p in failed_shapes:
+          ck.out('----------------------------------------')
+          color_out(Colors.HEADER, '{}:{}'.format(p['dataset'], p['file']))
+          ck.out(p['reason'])
+        ck.out('\n----------------------------------------')
+        ck.out('Failed shapes (summary): {}'.format(len(failed_shapes)))
+        for p in failed_shapes:
+          ck.out('{}:{}'.format(p['dataset'], p['file']))
+
+  except CKException as e:
+    return e.ck_result
   return {'return': 0}
 
 
