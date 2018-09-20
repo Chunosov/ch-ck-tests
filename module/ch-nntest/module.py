@@ -112,7 +112,7 @@ def load_meta(entry):
     return json.load(f)
 
 
-def get_dataset_files(prog, with_path=False):
+def get_dataset_files(prog, with_path=False, only_this_dataset=''):
   '''
   Get list of all files of all datasets for specified program
   Each item in the list is a pair: (dataset_uoa, dataset_file)
@@ -134,6 +134,8 @@ def get_dataset_files(prog, with_path=False):
   processing_files = []
   for dataset in datasets:
     dataset_uoa = dataset['data_uoa']
+    if only_this_dataset and only_this_dataset != dataset_uoa:
+      continue
     dataset_meta = load_meta(dataset)
     for dataset_file in dataset_meta['dataset_files']:
       if with_path:
@@ -325,6 +327,8 @@ def validate(i):
   Params
   stop_after_fail        - stop processing after first fail
   show_only_successful
+  reason                 - show fail reason
+  dataset_uoa            - if set, process only this dataset
   '''
   try:
     prog = get_target_prog(i)
@@ -333,7 +337,7 @@ def validate(i):
     stop_after_fail = i.get('stop_after_fail') == 'yes'
 
     processed_files = 0
-    processing_files = get_dataset_files(prog)
+    processing_files = get_dataset_files(prog, only_this_dataset=i.get('dataset_uoa'))
     failed_shapes = []
     success_shapes = []
 
